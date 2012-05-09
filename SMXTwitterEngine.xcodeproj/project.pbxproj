@@ -19,8 +19,6 @@
 		F4F94FDF155AA3DC00BBD987 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4F94FDE155AA3DC00BBD987 /* TwitterViewController.xib */; };
 		F4F95042155AC07C00BBD987 /* THWebController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F4F9503F155AC07C00BBD987 /* THWebController.bundle */; };
 		F4F95049155AC63D00BBD987 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF8155A7EED00BBD987 /* Foundation.framework */; };
-		F4F95055155AC65300BBD987 /* SMXTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */; };
-		F4F95056155AC65600BBD987 /* SMXTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */; settings = {ATTRIBUTES = (); }; };
 		F4F95057155AC65900BBD987 /* MKBlockAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */; };
 		F4F95058155AC65D00BBD987 /* UIAlertView+MKBlockAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */; };
 		F4F95059155AC66000BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */; };
@@ -67,6 +65,8 @@
 		F4F95086155AC71700BBD987 /* OAToken.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F95005155AA6DE00BBD987 /* OAToken.h */; };
 		F4F95087155AC71700BBD987 /* OATokenManager.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F95007155AA6DE00BBD987 /* OATokenManager.h */; };
 		F4F95088155AC71700BBD987 /* OAuthConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F95009155AA6DE00BBD987 /* OAuthConsumer.h */; };
+		F4F9508B155AC82300BBD987 /* SMXTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F95089155AC82300BBD987 /* SMXTwitterEngine.h */; };
+		F4F9508C155AC82300BBD987 /* SMXTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F9508A155AC82300BBD987 /* SMXTwitterEngine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,8 +90,6 @@
 		F4F94F04155A7EED00BBD987 /* SMXTwitterEngine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SMXTwitterEngine-Prefix.pch"; sourceTree = "<group>"; };
 		F4F94F05155A7EED00BBD987 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F4F94F06155A7EED00BBD987 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMXTwitterEngine.h; path = ../SMXTwitterEngine/SMXTwitterEngine.h; sourceTree = "<group>"; };
-		F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMXTwitterEngine.m; path = ../SMXTwitterEngine/SMXTwitterEngine.m; sourceTree = "<group>"; };
 		F4F94F10155A7F4200BBD987 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F4F94F12155A7F9400BBD987 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKBlockAdditions.h; path = MKBlockAdditions/MKAdditions/MKBlockAdditions.h; sourceTree = SOURCE_ROOT; };
@@ -147,6 +145,8 @@
 		F4F95041155AC07C00BBD987 /* THWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = THWebController.m; path = THWebViewController/THWebViewController/THWebController.m; sourceTree = SOURCE_ROOT; };
 		F4F95048155AC63D00BBD987 /* liblibSMXTwitterEngine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibSMXTwitterEngine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F9504C155AC63D00BBD987 /* libSMXTwitterEngine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "libSMXTwitterEngine-Prefix.pch"; sourceTree = "<group>"; };
+		F4F95089155AC82300BBD987 /* SMXTwitterEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMXTwitterEngine.h; sourceTree = "<group>"; };
+		F4F9508A155AC82300BBD987 /* SMXTwitterEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMXTwitterEngine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,8 +316,8 @@
 		F4F9504A155AC63D00BBD987 /* libSMXTwitterEngine */ = {
 			isa = PBXGroup;
 			children = (
-				F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */,
-				F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */,
+				F4F95089155AC82300BBD987 /* SMXTwitterEngine.h */,
+				F4F9508A155AC82300BBD987 /* SMXTwitterEngine.m */,
 				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
 				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
 				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
@@ -344,7 +344,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4F95056155AC65600BBD987 /* SMXTwitterEngine.h in Headers */,
 				F4F95057155AC65900BBD987 /* MKBlockAdditions.h in Headers */,
 				F4F95058155AC65D00BBD987 /* UIAlertView+MKBlockAdditions.h in Headers */,
 				F4F9505A155AC66700BBD987 /* THWebController.h in Headers */,
@@ -369,6 +368,7 @@
 				F4F95086155AC71700BBD987 /* OAToken.h in Headers */,
 				F4F95087155AC71700BBD987 /* OATokenManager.h in Headers */,
 				F4F95088155AC71700BBD987 /* OAuthConsumer.h in Headers */,
+				F4F9508B155AC82300BBD987 /* SMXTwitterEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,7 +464,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4F95055155AC65300BBD987 /* SMXTwitterEngine.m in Sources */,
 				F4F95059155AC66000BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */,
 				F4F9505B155AC66A00BBD987 /* THWebController.m in Sources */,
 				F4F9505C155AC67600BBD987 /* JSONKit.m in Sources */,
@@ -486,6 +485,7 @@
 				F4F9506C155AC6A900BBD987 /* OAServiceTicket.m in Sources */,
 				F4F9506D155AC6A900BBD987 /* OAToken.m in Sources */,
 				F4F9506E155AC6A900BBD987 /* OATokenManager.m in Sources */,
+				F4F9508C155AC82300BBD987 /* SMXTwitterEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
