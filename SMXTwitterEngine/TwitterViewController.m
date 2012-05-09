@@ -10,14 +10,39 @@
 #import "SMXTwitterEngine.h"
 
 @implementation TwitterViewController
+@synthesize tweetField;
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [self.tweetField becomeFirstResponder];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self sendTweet:textField];
+    return YES;
+}
 
 - (IBAction)sendTweet:(id)sender {
     [SMXTwitterEngine setConsumerKey:@"z0UAUAiauMKylCJYsKePg" consumerSecret:@"OZAGlveHaIb5FqiC2hec7Fps2Hf7ZRDsu5Olb70anw" callback:@"http://simonmaddox.com"];
     
-    [SMXTwitterEngine sendTweet:@"Hello Twitter (this is a test)! :)" withCompletionHandler:^(NSDictionary *response, NSError *error){
-        NSLog(@"Response: %@", response); 
-        NSLog(@"Error: %@", error);
+    [SMXTwitterEngine sendTweet:self.tweetField.text withCompletionHandler:^(NSDictionary *response, NSError *error){
+        if (error){
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];
+            [alert show];
+        } else {
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Tweet Posted" message:nil delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];
+            [alert show];
+        }
     }];
 }
 
+- (void)dealloc {
+    [tweetField release];
+    [super dealloc];
+}
+- (void)viewDidUnload {
+    [self setTweetField:nil];
+    [super viewDidUnload];
+}
 @end

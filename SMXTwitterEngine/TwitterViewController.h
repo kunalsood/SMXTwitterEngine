@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TwitterViewController : UIViewController
+@interface TwitterViewController : UIViewController <UITextFieldDelegate>
 
 - (IBAction)sendTweet:(id)sender;
+@property (retain, nonatomic) IBOutlet UITextField *tweetField;
 
 @end
