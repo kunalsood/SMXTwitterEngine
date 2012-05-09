@@ -46,3 +46,7 @@ Have a look at the example project for a working demo.
 ## ARC
 
 As much as I'd love to support ARC, requiring iOS 4.0 support means I can't :(
+
+## iOS 3
+
+Since iOS 3 doesn't support blocks, it is currently not supported. Feel free to issue a pull request ;)
