@@ -90,8 +90,8 @@
 		F4F94F04155A7EED00BBD987 /* SMXTwitterEngine-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SMXTwitterEngine-Prefix.pch"; sourceTree = "<group>"; };
 		F4F94F05155A7EED00BBD987 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F4F94F06155A7EED00BBD987 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMXTwitterEngine.h; sourceTree = "<group>"; };
-		F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMXTwitterEngine.m; sourceTree = "<group>"; };
+		F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMXTwitterEngine.h; path = ../SMXTwitterEngine/SMXTwitterEngine.h; sourceTree = "<group>"; };
+		F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMXTwitterEngine.m; path = ../SMXTwitterEngine/SMXTwitterEngine.m; sourceTree = "<group>"; };
 		F4F94F10155A7F4200BBD987 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F4F94F12155A7F9400BBD987 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKBlockAdditions.h; path = MKBlockAdditions/MKAdditions/MKBlockAdditions.h; sourceTree = SOURCE_ROOT; };
@@ -213,14 +213,6 @@
 				F4F94FDB155AA3B400BBD987 /* TwitterViewController.h */,
 				F4F94FDC155AA3B400BBD987 /* TwitterViewController.m */,
 				F4F94FDE155AA3DC00BBD987 /* TwitterViewController.xib */,
-				F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */,
-				F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */,
-				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
-				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
-				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
-				F4F9503E155AC06800BBD987 /* THWebViewController */,
-				F4F95035155ABC0B00BBD987 /* JSONKit */,
-				F4F94FE0155AA6DE00BBD987 /* OAuthConsumer */,
 				F4F94EFD155A7EED00BBD987 /* Supporting Files */,
 			);
 			path = SMXTwitterEngine;
@@ -318,11 +310,20 @@
 				F4F95041155AC07C00BBD987 /* THWebController.m */,
 			);
 			name = THWebViewController;
+			path = ../SMXTwitterEngine;
 			sourceTree = "<group>";
 		};
 		F4F9504A155AC63D00BBD987 /* libSMXTwitterEngine */ = {
 			isa = PBXGroup;
 			children = (
+				F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */,
+				F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */,
+				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
+				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
+				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
+				F4F9503E155AC06800BBD987 /* THWebViewController */,
+				F4F95035155ABC0B00BBD987 /* JSONKit */,
+				F4F94FE0155AA6DE00BBD987 /* OAuthConsumer */,
 				F4F9504B155AC63D00BBD987 /* Supporting Files */,
 			);
 			path = libSMXTwitterEngine;
