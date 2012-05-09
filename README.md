@@ -58,7 +58,8 @@ Have a look at the example project for a working demo.
 
 ## ARC
 
-As much as I'd love to support ARC, requiring iOS 4.0 support means I can't :(
+As much as I'd love to use ARC, requiring iOS 4.0 support means I can't :(
+SMXTwitterEngine does, however, still work in an ARC enabled application.
 
 ## iOS 3
 
