@@ -15,6 +15,7 @@
 #import "OAToken.h"
 
 #import "WebViewController.h"
+#import "JSONKit.h"
 
 @interface SMXTwitterEngine () {
 }
@@ -35,7 +36,7 @@
 @property (nonatomic, strong) id presentationViewController;
 @property (nonatomic, strong) OAConsumer *consumer;
 @property (nonatomic, strong) OAToken *accessToken;
-@property (nonatomic, strong) NSString *responseString;
+@property (nonatomic, strong) NSData *responseData;
 
 - (id) initWithPresentationController:(id)viewController tweet:(NSString *)tweet;
 - (void) postTweet;
@@ -122,16 +123,16 @@
 }
 
 + (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
-{
-    NSLog(@"Manually sending tweet");
-    
+{    
     SMXTwitterEngineHandler *engine = [[SMXTwitterEngineHandler alloc] initWithPresentationController:[[[UIApplication sharedApplication] keyWindow] rootViewController] tweet:tweet];
 
     do {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     } while (!engine.done);
     
-    NSLog(@"Response: %@", engine.responseString);
+    NSDictionary *response = [[JSONDecoder decoder] objectWithData:engine.responseData];
+    
+    handler(response, engine.error);
 }
 
 + (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback
@@ -146,7 +147,7 @@
 
 @implementation SMXTwitterEngineHandler
 
-@synthesize done, error, presentationViewController, accessToken, consumer, tweet, responseString;
+@synthesize done, error, presentationViewController, accessToken, consumer, tweet, responseData;
 
 - (id) initWithPresentationController:(id)viewController tweet:(NSString *)aTweet
 {
@@ -165,7 +166,6 @@
         OAToken *token = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
         
         if (token.isValid){
-            NSLog(@"Token is valid. Reusing.");
             self.accessToken = token;
             [self postTweet];
         } else {
@@ -300,7 +300,7 @@
 
 - (void) apiTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data
 {
-    self.responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    self.responseData = data;
     self.done = YES;
 }
 
