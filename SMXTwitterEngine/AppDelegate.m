@@ -26,7 +26,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    [SMXTwitterEngine sendTweet:@"Hello Twitter (this is a test)" withCompletionHandler:^(id response, NSError *error){
+    [SMXTwitterEngine sendTweet:@"Hello Twitter (this is a test)" withCompletionHandler:^(NSDictionary *response, NSError *error){
         NSLog(@"Response: %@", response); 
         NSLog(@"Error: %@", error);
     }];
