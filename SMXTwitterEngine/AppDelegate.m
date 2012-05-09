@@ -3,7 +3,7 @@
 //  SMXTwitterEngine
 //
 //  Created by Simon Maddox on 09/05/2012.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 The Lab, Telefonica UK Ltd. All rights reserved.
 //
 
 #import "AppDelegate.h"
