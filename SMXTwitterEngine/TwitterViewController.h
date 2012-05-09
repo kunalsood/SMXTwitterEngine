@@ -12,5 +12,6 @@
 
 - (IBAction)sendTweet:(id)sender;
 @property (retain, nonatomic) IBOutlet UITextField *tweetField;
+@property (retain, nonatomic) IBOutlet UIButton *tweetButton;
 
 @end
