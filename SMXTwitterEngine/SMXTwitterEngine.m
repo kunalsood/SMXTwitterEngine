@@ -36,7 +36,7 @@
 @property (nonatomic, strong) id presentationViewController;
 @property (nonatomic, strong) OAConsumer *consumer;
 @property (nonatomic, strong) OAToken *accessToken;
-@property (nonatomic, strong) NSData *responseData;
+@property (nonatomic, strong) NSDictionary *responseDictionary;
 
 - (id) initWithPresentationController:(id)viewController tweet:(NSString *)tweet;
 - (void) postTweet;
@@ -142,10 +142,8 @@
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         } while (!engine.done);
         
-        NSDictionary *response = [[JSONDecoder decoder] objectWithData:engine.responseData];
-        
         dispatch_async(dispatch_get_main_queue(), ^(){
-            handler(response, engine.error);
+            handler(engine.responseDictionary, engine.error);
         });
     });
 }
@@ -162,7 +160,7 @@
 
 @implementation SMXTwitterEngineHandler
 
-@synthesize done, error, presentationViewController, accessToken, consumer, tweet, responseData;
+@synthesize done, error, presentationViewController, accessToken, consumer, tweet, responseDictionary;
 
 - (id) initWithPresentationController:(id)viewController tweet:(NSString *)aTweet
 {
@@ -313,7 +311,12 @@
 
 - (void) apiTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data
 {
-    self.responseData = data;
+    self.responseDictionary = [[JSONDecoder decoder] objectWithData:data];
+    
+    if ([self.responseDictionary objectForKey:@"error"] != nil){
+        self.error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:103 userInfo:[NSDictionary dictionaryWithObject:[self.responseDictionary objectForKey:@"error"] forKey:NSLocalizedDescriptionKey]];
+    }
+    
     self.done = YES;
 }
 
