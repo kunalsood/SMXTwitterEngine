@@ -88,7 +88,9 @@
                                                                           [SMXTwitterEngine useAccount:[accounts objectAtIndex:buttonIndex] toSendTweet:tweet completionHandler:handler];
                                                                       }
                                                                        onCancel:^(){
-                                                                           handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]]);
+                                                                           dispatch_async(dispatch_get_main_queue(), ^(){
+                                                                               handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]]);
+                                                                           });
                                                                        }
                                                  ];
 
@@ -100,8 +102,9 @@
                                     if (error == nil){
                                         error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:403 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User did not allow access to Twitter accounts", @"User did not allow access to Twitter accounts error message") forKey:NSLocalizedDescriptionKey]];
                                     }
-                                    
-                                    handler(nil, error);
+                                    dispatch_async(dispatch_get_main_queue(), ^(){
+                                        handler(nil, error);
+                                    });
                                 }
                             }
      ];
@@ -119,9 +122,13 @@
         NSDictionary *responseDictionary = [[JSONDecoder decoder] objectWithData:responseData];
         
         if (jsonError){
-            handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:102 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Error parsing response from Twitter", @"Error parsing response from Twitter error message") forKey:NSLocalizedDescriptionKey]]);
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:102 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Error parsing response from Twitter", @"Error parsing response from Twitter error message") forKey:NSLocalizedDescriptionKey]]);
+            });
         } else {
-            handler(responseDictionary, nil);
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                handler(responseDictionary, nil);
+            });
         }
     }];
 }
