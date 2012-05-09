@@ -10,6 +10,9 @@
 
 @interface SMXTwitterEngine : NSObject
 
+// You only need to use this if your app supports iOS 3 or 4
++ (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback;
+
 + (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 @end
