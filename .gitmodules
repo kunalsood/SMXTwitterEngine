@@ -1,3 +1,6 @@
 [submodule "MKBlockAdditions"]
 	path = MKBlockAdditions
 	url = https://github.com/MugunthKumar/UIKitCategoryAdditions.git
+[submodule "OAuthConsumer"]
+	path = OAuthConsumer
+	url = https://github.com/jdg/oauthconsumer.git
