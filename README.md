@@ -36,6 +36,8 @@ git submodule update --init
 Then, drag the SMXTwitterEngine Xcode project into your project. Add libSMXTwitterEngine as a dependency,
 and make sure to link against it.
 
+Add -ObjC and -all_load to your "Other Linker Flags".
+
 You'll also need to link against Twitter.framework and Accounts.framework. If you plan to support iOS 4.x, you'll
 need to make sure those are optional frameworks (weakly linked).
 
