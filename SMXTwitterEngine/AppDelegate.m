@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "SMXTwitterEngine.h"
 
 @implementation AppDelegate
 
@@ -24,6 +25,12 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    [SMXTwitterEngine sendTweet:@"Hello Twitter (this is a test)" withCompletionHandler:^(id response, NSError *error){
+        NSLog(@"Response: %@", response); 
+        NSLog(@"Error: %@", error);
+    }];
+    
     return YES;
 }
 
