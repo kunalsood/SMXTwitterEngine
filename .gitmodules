@@ -1,3 +1,6 @@
 [submodule "MKBlockAdditions"]
 	path = MKBlockAdditions
 	url = https://github.com/MugunthKumar/UIKitCategoryAdditions.git
+[submodule "Twitter-OAuth-iPhone"]
+	path = Twitter-OAuth-iPhone
+	url = https://github.com/bengottlieb/Twitter-OAuth-iPhone.git

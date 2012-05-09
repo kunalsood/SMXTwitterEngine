@@ -14,8 +14,8 @@
 @interface SMXTwitterEngine () {
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
-+ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useManualOauthToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 
 + (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
@@ -24,16 +24,16 @@
 
 @implementation SMXTwitterEngine
 
-+ (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) sendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 {
     if (NSClassFromString(@"TWRequest") != nil){
-        [SMXTwitterEngine useTwitterFrameworkToSendTweet:tweet completionHandler:handler];
+        [SMXTwitterEngine useTwitterFrameworkToSendTweet:tweet presentationViewController:viewController completionHandler:handler];
     } else {
-        [SMXTwitterEngine useManualOauthToSendTweet:tweet completionHandler:handler];
+        [SMXTwitterEngine useManualOauthToSendTweet:tweet presentationViewController:viewController completionHandler:handler];
     }
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     
@@ -44,7 +44,7 @@
                                     
                                     if (accounts.count == 0){
                                         // No accounts set up. Let's fall back to OAuth
-                                        [self useManualOauthToSendTweet:tweet completionHandler:handler];
+                                        [self useManualOauthToSendTweet:tweet presentationViewController:viewController completionHandler:handler];
                                     } else {
                                         
                                         if (accounts.count == 1){
@@ -101,7 +101,7 @@
     }];
 }
 
-+ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) useManualOauthToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     NSLog(@"Manually sending tweet");
 }

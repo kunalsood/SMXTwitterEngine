@@ -28,7 +28,7 @@
     
     [SMXTwitterEngine setConsumerKey:@"z0UAUAiauMKylCJYsKePg" consumerSecret:@"OZAGlveHaIb5FqiC2hec7Fps2Hf7ZRDsu5Olb70anw" callback:@"http://simonmaddox.com"];
     
-    [SMXTwitterEngine sendTweet:@"Hello Twitter (this is a test)" withCompletionHandler:^(NSDictionary *response, NSError *error){
+    [SMXTwitterEngine sendTweet:@"Hello Twitter (this is a test)" presentationViewController:nil withCompletionHandler:^(NSDictionary *response, NSError *error){
         NSLog(@"Response: %@", response); 
         NSLog(@"Error: %@", error);
     }];
