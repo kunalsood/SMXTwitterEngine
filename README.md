@@ -40,6 +40,9 @@ Would you rather use a Tweet Sheet on iOS 5 if possible? Easy:
 [SMXTwitterEngine setUseTweetComposeSheetIfPossible:YES];
 ```
 
+NOTE: Using a Tweet sheet will return an empty NSDictionary to your completion handler, since iOS doesn't make any
+information about the posted tweet available.
+
 ## Installing
 
 First, grab the submodules:
