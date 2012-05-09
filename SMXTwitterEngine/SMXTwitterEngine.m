@@ -105,9 +105,9 @@
 
 + (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
-    TWRequest *twitterRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"] 
+    TWRequest *twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"] 
                                                     parameters:[NSDictionary dictionaryWithObject:tweet forKey:@"status"] 
-                                                 requestMethod:TWRequestMethodPOST];
+                                                 requestMethod:TWRequestMethodPOST] autorelease];
     [twitterRequest setAccount:account];
     
     [twitterRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error){
@@ -124,7 +124,7 @@
 
 + (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {    
-    SMXTwitterEngineHandler *engine = [[SMXTwitterEngineHandler alloc] initWithPresentationController:[[[UIApplication sharedApplication] keyWindow] rootViewController] tweet:tweet];
+    SMXTwitterEngineHandler *engine = [[[SMXTwitterEngineHandler alloc] initWithPresentationController:[[[UIApplication sharedApplication] keyWindow] rootViewController] tweet:tweet] autorelease];
 
     do {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
@@ -160,25 +160,25 @@
         NSString *secret = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerSecret"];
         
         
-        self.consumer = [[OAConsumer alloc] initWithKey:key
-                                                        secret:secret];
+        self.consumer = [[[OAConsumer alloc] initWithKey:key
+                                                        secret:secret] autorelease];
         
-        OAToken *token = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
+        OAToken *token = [[[OAToken alloc] initWithUserDefaultsUsingServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil] autorelease];
         
         if (token.isValid){
             self.accessToken = token;
             [self postTweet];
         } else {
             
-            OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+            OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
             
             NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/request_token"];
             
-            OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
+            OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
                                                                            consumer:consumer
                                                                               token:nil
                                                                               realm:nil
-                                                                  signatureProvider:nil];
+                                                                  signatureProvider:nil] autorelease];
             
             [request setHTTPMethod:@"POST"];
             
@@ -196,10 +196,10 @@
 {
     if (ticket.didSucceed)
     {
-        NSString *responseBody = [[NSString alloc] initWithData:data 
-                                                       encoding:NSUTF8StringEncoding];
+        NSString *responseBody = [[[NSString alloc] initWithData:data 
+                                                       encoding:NSUTF8StringEncoding] autorelease];
         
-        self.accessToken = [[OAToken alloc] initWithHTTPResponseBody:responseBody];
+        self.accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
         
         NSString *address = [NSString stringWithFormat:
                              @"https://api.twitter.com/oauth/authorize?oauth_token=%@",
@@ -238,11 +238,11 @@
         
         NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
                 
-        OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
+        OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
                                                                        consumer:self.consumer
                                                                           token:self.accessToken
                                                                           realm:nil
-                                                              signatureProvider:nil];
+                                                              signatureProvider:nil] autorelease];
         
         [request setHTTPMethod:@"POST"];
         
@@ -262,32 +262,26 @@
 {
     if (ticket.didSucceed)
     {
-        NSString *responseBody = [[NSString alloc] initWithData:data 
-                                                       encoding:NSUTF8StringEncoding];
+        NSString *responseBody = [[[NSString alloc] initWithData:data 
+                                                       encoding:NSUTF8StringEncoding] autorelease];
         
-        self.accessToken = [[OAToken alloc] initWithHTTPResponseBody:responseBody];
+        self.accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
         [self.accessToken storeInUserDefaultsWithServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
         [self postTweet];
     }
 }
 
 - (void) postTweet
-{    
-    NSString *key = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerKey"];
-    NSString *secret = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerSecret"];
-    
-    OAConsumer *c = [[OAConsumer alloc] initWithKey:key
-                             secret:secret];
-    
+{        
     OADataFetcher *fetcher = [[OADataFetcher alloc] init];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/statuses/update.json"]];
     
-    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
-                                                                   consumer:c
+    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+                                                                   consumer:self.consumer
                                                                       token:self.accessToken
                                                                       realm:nil
-                                                          signatureProvider:nil];
+                                                          signatureProvider:nil] autorelease];
     
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[[NSString stringWithFormat:@"status=%@", [self.tweet encodedURLParameterString]] dataUsingEncoding:NSUTF8StringEncoding]];
