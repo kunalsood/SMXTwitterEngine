@@ -95,7 +95,9 @@
                                             [SMXTwitterEngine useAccount:[accounts objectAtIndex:0] toSendTweet:tweet completionHandler:handler];
                                         } else {
                                             // More than one account set up. Let's ask which one we should use...
-                                            NSArray *titles = [accounts valueForKeyPath:@"accountDescription"];
+                                            NSArray *accountTitles = [accounts valueForKeyPath:@"accountDescription"];
+                                            NSMutableArray *titles = [NSMutableArray arrayWithArray:accountTitles];
+                                            [titles addObject:NSLocalizedString(@"Another Account", @"Another Account alert title")];
                                             
                                             dispatch_async(dispatch_get_main_queue(), ^(){
                                                 [UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose a Twitter account", @"Choose a Twitter account alert title") 
@@ -103,7 +105,11 @@
                                                               cancelButtonTitle:NSLocalizedString(@"Cancel", @"Choose a Twitter account alert cancel button") 
                                                               otherButtonTitles:titles 
                                                                       onDismiss:^(int buttonIndex){
-                                                                          [SMXTwitterEngine useAccount:[accounts objectAtIndex:buttonIndex] toSendTweet:tweet completionHandler:handler];
+                                                                          if (buttonIndex == (titles.count - 1)){
+                                                                              [SMXTwitterEngine useManualOauthToSendTweet:tweet completionHandler:handler];
+                                                                          } else {
+                                                                              [SMXTwitterEngine useAccount:[accounts objectAtIndex:buttonIndex] toSendTweet:tweet completionHandler:handler];
+                                                                          }
                                                                       }
                                                                        onCancel:^(){
                                                                            dispatch_async(dispatch_get_main_queue(), ^(){
