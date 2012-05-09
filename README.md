@@ -34,6 +34,12 @@ If you're planning on running on devices running 4.x, you'll also need:
 You'll need to get your consumer key, consumer secret and callback set up [here](http://dev.twitter.com/apps). 
 Don't forget to make the application "Read & Write".
 
+Would you rather use a Tweet Sheet on iOS 5 if possible? Easy:
+
+``` objc
+[SMXTwitterEngine setUseTweetComposeSheetIfPossible:YES];
+```
+
 ## Installing
 
 First, grab the submodules:
