@@ -39,13 +39,6 @@
 		F4F9501C155AA6DF00BBD987 /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95006155AA6DE00BBD987 /* OAToken.m */; };
 		F4F9501D155AA6DF00BBD987 /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95008155AA6DE00BBD987 /* OATokenManager.m */; };
 		F4F9501E155AA6DF00BBD987 /* README in Resources */ = {isa = PBXBuildFile; fileRef = F4F9500A155AA6DE00BBD987 /* README */; };
-		F4F95024155AAAA200BBD987 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95022155AAAA200BBD987 /* WebViewController.m */; };
-		F4F95025155AAAA200BBD987 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4F95023155AAAA200BBD987 /* WebViewController.xib */; };
-		F4F95028155AAB4B00BBD987 /* UIImage+Retina.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95027155AAB4A00BBD987 /* UIImage+Retina.m */; };
-		F4F95031155AABA300BBD987 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = F4F9502D155AABA300BBD987 /* back.png */; };
-		F4F95032155AABA300BBD987 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4F9502E155AABA300BBD987 /* back@2x.png */; };
-		F4F95033155AABA300BBD987 /* forw.png in Resources */ = {isa = PBXBuildFile; fileRef = F4F9502F155AABA300BBD987 /* forw.png */; };
-		F4F95034155AABA300BBD987 /* forw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4F95030155AABA300BBD987 /* forw@2x.png */; };
 		F4F95038155ABC1C00BBD987 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95037155ABC1C00BBD987 /* JSONKit.m */; };
 /* End PBXBuildFile section */
 
@@ -110,15 +103,6 @@
 		F4F95008155AA6DE00BBD987 /* OATokenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATokenManager.m; sourceTree = "<group>"; };
 		F4F95009155AA6DE00BBD987 /* OAuthConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthConsumer.h; sourceTree = "<group>"; };
 		F4F9500A155AA6DE00BBD987 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		F4F95021155AAAA200BBD987 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
-		F4F95022155AAAA200BBD987 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
-		F4F95023155AAAA200BBD987 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
-		F4F95026155AAB4A00BBD987 /* UIImage+Retina.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Retina.h"; sourceTree = "<group>"; };
-		F4F95027155AAB4A00BBD987 /* UIImage+Retina.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Retina.m"; sourceTree = "<group>"; };
-		F4F9502D155AABA300BBD987 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
-		F4F9502E155AABA300BBD987 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
-		F4F9502F155AABA300BBD987 /* forw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forw.png; sourceTree = "<group>"; };
-		F4F95030155AABA300BBD987 /* forw@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forw@2x.png"; sourceTree = "<group>"; };
 		F4F95036155ABC1C00BBD987 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
 		F4F95037155ABC1C00BBD987 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -178,11 +162,6 @@
 				F4F94FDE155AA3DC00BBD987 /* TwitterViewController.xib */,
 				F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */,
 				F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */,
-				F4F95021155AAAA200BBD987 /* WebViewController.h */,
-				F4F95022155AAAA200BBD987 /* WebViewController.m */,
-				F4F95023155AAAA200BBD987 /* WebViewController.xib */,
-				F4F95026155AAB4A00BBD987 /* UIImage+Retina.h */,
-				F4F95027155AAB4A00BBD987 /* UIImage+Retina.m */,
 				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
 				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
 				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
@@ -196,10 +175,6 @@
 		F4F94EFD155A7EED00BBD987 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F4F9502D155AABA300BBD987 /* back.png */,
-				F4F9502E155AABA300BBD987 /* back@2x.png */,
-				F4F9502F155AABA300BBD987 /* forw.png */,
-				F4F95030155AABA300BBD987 /* forw@2x.png */,
 				F4F94EFE155A7EED00BBD987 /* SMXTwitterEngine-Info.plist */,
 				F4F94EFF155A7EED00BBD987 /* InfoPlist.strings */,
 				F4F94F02155A7EED00BBD987 /* main.m */,
@@ -335,11 +310,6 @@
 				F4F94FDF155AA3DC00BBD987 /* TwitterViewController.xib in Resources */,
 				F4F9501B155AA6DF00BBD987 /* OATestServer.rb in Resources */,
 				F4F9501E155AA6DF00BBD987 /* README in Resources */,
-				F4F95025155AAAA200BBD987 /* WebViewController.xib in Resources */,
-				F4F95031155AABA300BBD987 /* back.png in Resources */,
-				F4F95032155AABA300BBD987 /* back@2x.png in Resources */,
-				F4F95033155AABA300BBD987 /* forw.png in Resources */,
-				F4F95034155AABA300BBD987 /* forw@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,8 +343,6 @@
 				F4F9501A155AA6DE00BBD987 /* OAServiceTicket.m in Sources */,
 				F4F9501C155AA6DF00BBD987 /* OAToken.m in Sources */,
 				F4F9501D155AA6DF00BBD987 /* OATokenManager.m in Sources */,
-				F4F95024155AAAA200BBD987 /* WebViewController.m in Sources */,
-				F4F95028155AAB4B00BBD987 /* UIImage+Retina.m in Sources */,
 				F4F95038155ABC1C00BBD987 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

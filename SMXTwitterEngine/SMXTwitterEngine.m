@@ -14,7 +14,6 @@
 #import "OADataFetcher.h"
 #import "OAToken.h"
 
-#import "WebViewController.h"
 #import "JSONKit.h"
 
 @interface SMXTwitterEngine () {
