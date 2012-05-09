@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F41DCE0E155ACC900004F697 /* Tweet.h in Headers */ = {isa = PBXBuildFile; fileRef = F41DCE0C155ACC900004F697 /* Tweet.h */; };
 		F41DCE0F155ACC900004F697 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = F41DCE0D155ACC900004F697 /* Tweet.m */; };
+		F41DCE15155AD0BA0004F697 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = F41DCE14155AD0BA0004F697 /* apple.png */; };
 		F4F94EF7155A7EED00BBD987 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF6155A7EED00BBD987 /* UIKit.framework */; };
 		F4F94EF9155A7EED00BBD987 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF8155A7EED00BBD987 /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F4F94EFB155A7EED00BBD987 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EFA155A7EED00BBD987 /* CoreGraphics.framework */; };
@@ -84,6 +85,7 @@
 /* Begin PBXFileReference section */
 		F41DCE0C155ACC900004F697 /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
 		F41DCE0D155ACC900004F697 /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
+		F41DCE14155AD0BA0004F697 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
 		F4F94EF2155A7EED00BBD987 /* SMXTwitterEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SMXTwitterEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F94EF6155A7EED00BBD987 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F4F94EF8155A7EED00BBD987 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -178,6 +180,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F41DCE13155ACEB90004F697 /* MKBlockAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
+				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
+				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
+			);
+			name = MKBlockAdditions;
+			sourceTree = "<group>";
+		};
 		F4F94EE7155A7EED00BBD987 = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +237,7 @@
 		F4F94EFD155A7EED00BBD987 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F41DCE14155AD0BA0004F697 /* apple.png */,
 				F4F94EFE155A7EED00BBD987 /* SMXTwitterEngine-Info.plist */,
 				F4F94EFF155A7EED00BBD987 /* InfoPlist.strings */,
 				F4F94F02155A7EED00BBD987 /* main.m */,
@@ -324,9 +337,7 @@
 				F4F9508A155AC82300BBD987 /* SMXTwitterEngine.m */,
 				F41DCE0C155ACC900004F697 /* Tweet.h */,
 				F41DCE0D155ACC900004F697 /* Tweet.m */,
-				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
-				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
-				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
+				F41DCE13155ACEB90004F697 /* MKBlockAdditions */,
 				F4F9503E155AC06800BBD987 /* THWebViewController */,
 				F4F95035155ABC0B00BBD987 /* JSONKit */,
 				F4F94FE0155AA6DE00BBD987 /* OAuthConsumer */,
@@ -451,6 +462,7 @@
 				F4F94F01155A7EED00BBD987 /* InfoPlist.strings in Resources */,
 				F4F94FDF155AA3DC00BBD987 /* TwitterViewController.xib in Resources */,
 				F4F95042155AC07C00BBD987 /* THWebController.bundle in Resources */,
+				F41DCE15155AD0BA0004F697 /* apple.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +583,10 @@
 				INFOPLIST_FILE = "SMXTwitterEngine/SMXTwitterEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -585,6 +601,10 @@
 				INFOPLIST_FILE = "SMXTwitterEngine/SMXTwitterEngine-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -28,7 +28,7 @@
     self.tweetButton.enabled = NO;
     [SMXTwitterEngine setConsumerKey:@"z0UAUAiauMKylCJYsKePg" consumerSecret:@"OZAGlveHaIb5FqiC2hec7Fps2Hf7ZRDsu5Olb70anw" callback:@"http://simonmaddox.com"];
     
-    [SMXTwitterEngine sendTweet:self.tweetField.text withCompletionHandler:^(NSDictionary *response, NSError *error){
+    [SMXTwitterEngine sendTweet:self.tweetField.text andImage:[UIImage imageNamed:@"apple"] withCompletionHandler:^(NSDictionary *response, NSError *error){
         self.tweetButton.enabled = YES;
         if (error){
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];

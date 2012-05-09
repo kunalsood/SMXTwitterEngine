@@ -65,7 +65,17 @@
 
 + (void) sendTweet:(NSString *)tweet andImage:(UIImage *)image withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
+    Tweet *t = [[Tweet alloc] init];
+    t.tweet = tweet;
+    t.image = image;
     
+    NSLog(@"IMAGE: %@", image);
+    
+    if (NSClassFromString(@"TWRequest") != nil){
+        [SMXTwitterEngine useTwitterFrameworkToSendTweet:t completionHandler:handler];
+    } else {
+        [SMXTwitterEngine useManualOauthToSendTweet:t completionHandler:handler];
+    }
 }
 
 + (void) useTwitterFrameworkToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
@@ -122,9 +132,20 @@
 
 + (void) useAccount:(ACAccount *)account toSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
-    TWRequest *twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"] 
+    TWRequest *twitterRequest = nil;
+    
+    if (tweet.image == nil){
+        twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"] 
                                                     parameters:[NSDictionary dictionaryWithObject:tweet.tweet forKey:@"status"] 
                                                  requestMethod:TWRequestMethodPOST] autorelease];
+    } else {
+        twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] 
+                                              parameters:nil 
+                                           requestMethod:TWRequestMethodPOST] autorelease];
+        [twitterRequest addMultiPartData:UIImagePNGRepresentation(tweet.image) withName:@"media" type:@"image/png"];
+        [twitterRequest addMultiPartData:[tweet.tweet dataUsingEncoding:NSUTF8StringEncoding] withName:@"status" type:@"text/plain"];
+    }
+    
     [twitterRequest setAccount:account];
     
     [twitterRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error){
