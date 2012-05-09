@@ -16,6 +16,15 @@ If you only want to use it on iOS5, it's really simple:
 }];
 ```
 
+Want to attach an image? Easy:
+
+``` objc
+[SMXTwitterEngine sendTweet:@"This is a tweet" andImage:myImage withCompletionHandler:^(NSDictionary *response, NSError *error){
+	NSLog(@"Response: %@", response);
+	NSLog(@"Error: %@", error);
+}];
+```
+
 If you're planning on running on devices running 4.x, you'll also need:
 
 ``` objc
