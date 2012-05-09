@@ -19,7 +19,7 @@ If you only want to use it on iOS5, it's really simple:
 If you're planning on running on devices running 4.x, you'll also need:
 
 ``` objc
-	[SMXTwitterEngine setConsumerKey:@"KEY" consumerSecret:@"SECRET" callback:@"CALLBACK"];
+[SMXTwitterEngine setConsumerKey:@"KEY" consumerSecret:@"SECRET" callback:@"CALLBACK"];
 ```
 
 You'll need to get your consumer key, consumer secret and callback set up [here](http://dev.twitter.com/apps). 
