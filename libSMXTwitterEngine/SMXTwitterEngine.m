@@ -17,20 +17,22 @@
 #import "THWebController.h"
 #import "JSONKit.h"
 
+#import "Tweet.h"
+
 @interface SMXTwitterEngine () {
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
-+ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useTwitterFrameworkToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useManualOauthToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 
-+ (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useAccount:(ACAccount *)account toSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 @end
 
 @interface SMXTwitterEngineHandler : NSObject
 
-@property (nonatomic, retain) NSString *tweet;
+@property (nonatomic, retain) Tweet *tweet;
 @property (nonatomic) BOOL done;
 @property (nonatomic, retain) NSError *error;
 @property (nonatomic, strong) id presentationViewController;
@@ -38,7 +40,7 @@
 @property (nonatomic, strong) OAToken *accessToken;
 @property (nonatomic, strong) NSDictionary *responseDictionary;
 
-- (id) initWithPresentationController:(id)viewController tweet:(NSString *)tweet;
+- (id) initWithPresentationController:(id)viewController tweet:(Tweet *)tweet;
 - (void) postTweet;
 
 @end
@@ -51,14 +53,22 @@
 
 + (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 {
+    Tweet *t = [[Tweet alloc] init];
+    t.tweet = tweet;
+    
     if (NSClassFromString(@"TWRequest") != nil){
-        [SMXTwitterEngine useTwitterFrameworkToSendTweet:tweet completionHandler:handler];
+        [SMXTwitterEngine useTwitterFrameworkToSendTweet:t completionHandler:handler];
     } else {
-        [SMXTwitterEngine useManualOauthToSendTweet:tweet completionHandler:handler];
+        [SMXTwitterEngine useManualOauthToSendTweet:t completionHandler:handler];
     }
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) sendTweet:(NSString *)tweet andImage:(UIImage *)image withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
+{
+    
+}
+
++ (void) useTwitterFrameworkToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     
@@ -110,10 +120,10 @@
      ];
 }
 
-+ (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) useAccount:(ACAccount *)account toSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     TWRequest *twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"] 
-                                                    parameters:[NSDictionary dictionaryWithObject:tweet forKey:@"status"] 
+                                                    parameters:[NSDictionary dictionaryWithObject:tweet.tweet forKey:@"status"] 
                                                  requestMethod:TWRequestMethodPOST] autorelease];
     [twitterRequest setAccount:account];
     
@@ -133,7 +143,7 @@
     }];
 }
 
-+ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) useManualOauthToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {   
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(){
         SMXTwitterEngineHandler *engine = [[[SMXTwitterEngineHandler alloc] initWithPresentationController:[[[UIApplication sharedApplication] keyWindow] rootViewController] tweet:tweet] autorelease];
@@ -162,7 +172,7 @@
 
 @synthesize done, error, presentationViewController, accessToken, consumer, tweet, responseDictionary;
 
-- (id) initWithPresentationController:(id)viewController tweet:(NSString *)aTweet
+- (id) initWithPresentationController:(id)viewController tweet:(Tweet *)aTweet
 {
     if (self = [super init]){
         
@@ -301,7 +311,7 @@
                                                           signatureProvider:nil] autorelease];
     
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[[NSString stringWithFormat:@"status=%@", [self.tweet encodedURLParameterString]] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:[[NSString stringWithFormat:@"status=%@", [self.tweet.tweet encodedURLParameterString]] dataUsingEncoding:NSUTF8StringEncoding]];
     
     [fetcher fetchDataWithRequest:request 
                          delegate:self
