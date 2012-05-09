@@ -50,6 +50,8 @@ Add -ObjC and -all_load to your "Other Linker Flags".
 You'll also need to link against Twitter.framework and Accounts.framework. If you plan to support iOS 4.x, you'll
 need to make sure those are optional frameworks (weakly linked).
 
+Finally, make sure that THWebController.bundle is in your "Copy Bundle Resources" Build Phase.
+
 ## Demo
 
 Have a look at the example project for a working demo.
