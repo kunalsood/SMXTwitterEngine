@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F4F94EF7155A7EED00BBD987 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF6155A7EED00BBD987 /* UIKit.framework */; };
-		F4F94EF9155A7EED00BBD987 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF8155A7EED00BBD987 /* Foundation.framework */; };
+		F4F94EF9155A7EED00BBD987 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF8155A7EED00BBD987 /* Foundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F4F94EFB155A7EED00BBD987 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EFA155A7EED00BBD987 /* CoreGraphics.framework */; };
 		F4F94F01155A7EED00BBD987 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4F94EFF155A7EED00BBD987 /* InfoPlist.strings */; };
 		F4F94F03155A7EED00BBD987 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F02155A7EED00BBD987 /* main.m */; };
@@ -241,6 +241,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SMXTwitterEngine/SMXTwitterEngine-Prefix.pch";
 				INFOPLIST_FILE = "SMXTwitterEngine/SMXTwitterEngine-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -252,6 +253,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SMXTwitterEngine/SMXTwitterEngine-Prefix.pch";
 				INFOPLIST_FILE = "SMXTwitterEngine/SMXTwitterEngine-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
