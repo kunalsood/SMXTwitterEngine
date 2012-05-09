@@ -53,18 +53,20 @@
                                             // More than one account set up. Let's ask which one we should use...
                                             NSArray *titles = [accounts valueForKeyPath:@"accountDescription"];
                                             
-                                            [UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose a Twitter account", @"Choose a Twitter account alert title") 
-                                                                    message:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"Cancel", @"Choose a Twitter account alert cancel button") 
-                                                          otherButtonTitles:titles 
-                                                                  onDismiss:^(int buttonIndex){
-                                                                      [SMXTwitterEngine useAccount:[accounts objectAtIndex:buttonIndex] toSendTweet:tweet completionHandler:handler];
-                                                                  }
-                                                                   onCancel:^(){
-                                                                       handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]]);
-                                                                   }
-                                             ];
-                                            
+                                            dispatch_async(dispatch_get_main_queue(), ^(){
+                                                [UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose a Twitter account", @"Choose a Twitter account alert title") 
+                                                                        message:nil
+                                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Choose a Twitter account alert cancel button") 
+                                                              otherButtonTitles:titles 
+                                                                      onDismiss:^(int buttonIndex){
+                                                                          [SMXTwitterEngine useAccount:[accounts objectAtIndex:buttonIndex] toSendTweet:tweet completionHandler:handler];
+                                                                      }
+                                                                       onCancel:^(){
+                                                                           handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]]);
+                                                                       }
+                                                 ];
+
+                                            });                                            
                                         }
                                         
                                     }
