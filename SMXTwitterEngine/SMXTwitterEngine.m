@@ -11,7 +11,7 @@
 #import <Accounts/Accounts.h>
 #import "UIAlertView+MKBlockAdditions.h"
 
-@interface SMXTwitterEngine () <NSURLConnectionDelegate> {
+@interface SMXTwitterEngine () {
 }
 
 + (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
@@ -21,21 +21,6 @@
 + (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 @end
-
-
-@interface SMXTwitterEngineDownloader : NSObject
-
-@property (nonatomic, retain) NSMutableData *receivedData;
-@property (nonatomic) BOOL done;
-@property (nonatomic, retain) NSError *connectionError;
-
-@property (nonatomic, retain) NSURLConnection *connection;
-
-- (id) initWithRequest:(NSURLRequest *)request;
-- (void) start;
-
-@end
-
 
 @implementation SMXTwitterEngine
 
@@ -119,22 +104,6 @@
 + (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     NSLog(@"Manually sending tweet");
-    
-    NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
-    
-    NSString *authorizationHeader = [NSString stringWithFormat:@"OAuth oauth_nonce=\"%@\", oauth_callback=\"%@\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"%f\", oauth_consumer_key=\"%@\", oauth_signature=\"%@\", oauth_version=\"1.0\"", [NSString stringWithFormat:@"%d", arc4random()], [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineCallback"], timestamp, [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerKey"], [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerSecret"]];
-    
-    NSMutableURLRequest *requestToken = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/request_token"]];
-    [requestToken setHTTPMethod:@"POST"];
-    [requestToken addValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
-    
-    SMXTwitterEngineDownloader *downloader = [[SMXTwitterEngineDownloader alloc] initWithRequest:requestToken];
-    
-    do {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    } while (!downloader.done);
-    
-    
 }
 
 + (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback
@@ -142,42 +111,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:consumerKey forKey:@"SMXTwitterEngineConsumerKey"];
     [[NSUserDefaults standardUserDefaults] setObject:consumerSecret forKey:@"SMXTwitterEngineConsumerSecret"];
     [[NSUserDefaults standardUserDefaults] setObject:callback forKey:@"SMXTwitterEngineCallback"];
-}
-
-@end
-
-@implementation SMXTwitterEngineDownloader
-
-@synthesize receivedData, done, connectionError, connection;
-
-- (id) initWithRequest:(NSURLRequest *)request
-{
-    if (self = [super init]){
-        self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        self.receivedData = [NSMutableData data];
-    }
-    return self;
-}
-
-- (void) start
-{
-    [self.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [self.receivedData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    self.done = YES;
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    self.connectionError = error;
-    self.done = YES;
 }
 
 @end
