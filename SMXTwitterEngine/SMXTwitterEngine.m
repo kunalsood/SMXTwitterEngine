@@ -10,30 +10,41 @@
 #import <Twitter/Twitter.h>
 #import <Accounts/Accounts.h>
 #import "UIAlertView+MKBlockAdditions.h"
+#import "SA_OAuthTwitterEngine.h"
+#import "SA_OAuthTwitterController.h"
 
 @interface SMXTwitterEngine () {
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
-+ (void) useManualOauthToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 
 + (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 @end
 
+@interface SMXTwitterEngineHandler : NSObject <SA_OAuthTwitterEngineDelegate, SA_OAuthTwitterControllerDelegate>
+
+@property (nonatomic) BOOL done;
+@property (nonatomic, retain) NSError *error;
+
+- (id) initWithPresentationController:(id)viewController tweet:(NSString *)tweet;
+
+@end
+
 @implementation SMXTwitterEngine
 
-+ (void) sendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 {
     if (NSClassFromString(@"TWRequest") != nil){
-        [SMXTwitterEngine useTwitterFrameworkToSendTweet:tweet presentationViewController:viewController completionHandler:handler];
+        [SMXTwitterEngine useTwitterFrameworkToSendTweet:tweet completionHandler:handler];
     } else {
-        [SMXTwitterEngine useManualOauthToSendTweet:tweet presentationViewController:viewController completionHandler:handler];
+        [SMXTwitterEngine useManualOauthToSendTweet:tweet completionHandler:handler];
     }
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     
@@ -44,7 +55,7 @@
                                     
                                     if (accounts.count == 0){
                                         // No accounts set up. Let's fall back to OAuth
-                                        [self useManualOauthToSendTweet:tweet presentationViewController:viewController completionHandler:handler];
+                                        [self useManualOauthToSendTweet:tweet completionHandler:handler];
                                     } else {
                                         
                                         if (accounts.count == 1){
@@ -101,9 +112,11 @@
     }];
 }
 
-+ (void) useManualOauthToSendTweet:(NSString *)tweet presentationViewController:(UIViewController *)viewController completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     NSLog(@"Manually sending tweet");
+    
+    
 }
 
 + (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback
@@ -111,6 +124,22 @@
     [[NSUserDefaults standardUserDefaults] setObject:consumerKey forKey:@"SMXTwitterEngineConsumerKey"];
     [[NSUserDefaults standardUserDefaults] setObject:consumerSecret forKey:@"SMXTwitterEngineConsumerSecret"];
     [[NSUserDefaults standardUserDefaults] setObject:callback forKey:@"SMXTwitterEngineCallback"];
+}
+
+@end
+
+
+@implementation SMXTwitterEngineHandler
+
+@synthesize done, error;
+
+- (id) initWithPresentationController:(id)viewController tweet:(NSString *)tweet
+{
+    if (self = [super init]){
+        
+    }
+    
+    return self;
 }
 
 @end

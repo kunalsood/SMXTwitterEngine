@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "SMXTwitterEngine.h"
+#import "TwitterViewController.h"
 
 @implementation AppDelegate
 
@@ -26,12 +26,9 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    [SMXTwitterEngine setConsumerKey:@"z0UAUAiauMKylCJYsKePg" consumerSecret:@"OZAGlveHaIb5FqiC2hec7Fps2Hf7ZRDsu5Olb70anw" callback:@"http://simonmaddox.com"];
-    
-    [SMXTwitterEngine sendTweet:@"Hello Twitter (this is a test)" presentationViewController:nil withCompletionHandler:^(NSDictionary *response, NSError *error){
-        NSLog(@"Response: %@", response); 
-        NSLog(@"Error: %@", error);
-    }];
+    TwitterViewController *viewController = [[TwitterViewController alloc] init];
+    self.window.rootViewController = viewController;
+    [viewController release];
     
     return YES;
 }

@@ -17,6 +17,8 @@
 		F4F94F11155A7F4200BBD987 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94F10155A7F4200BBD987 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F4F94F13155A7F9400BBD987 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94F12155A7F9400BBD987 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F4F94F17155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */; };
+		F4F94FDD155AA3B400BBD987 /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FDC155AA3B400BBD987 /* TwitterViewController.m */; };
+		F4F94FDF155AA3DC00BBD987 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4F94FDE155AA3DC00BBD987 /* TwitterViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,9 @@
 		F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKBlockAdditions.h; path = MKBlockAdditions/MKAdditions/MKBlockAdditions.h; sourceTree = SOURCE_ROOT; };
 		F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+MKBlockAdditions.h"; path = "MKBlockAdditions/MKAdditions/UIAlertView+MKBlockAdditions.h"; sourceTree = SOURCE_ROOT; };
 		F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIAlertView+MKBlockAdditions.m"; path = "MKBlockAdditions/MKAdditions/UIAlertView+MKBlockAdditions.m"; sourceTree = SOURCE_ROOT; };
+		F4F94FDB155AA3B400BBD987 /* TwitterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewController.h; sourceTree = "<group>"; };
+		F4F94FDC155AA3B400BBD987 /* TwitterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterViewController.m; sourceTree = "<group>"; };
+		F4F94FDE155AA3DC00BBD987 /* TwitterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +94,9 @@
 			children = (
 				F4F94F05155A7EED00BBD987 /* AppDelegate.h */,
 				F4F94F06155A7EED00BBD987 /* AppDelegate.m */,
+				F4F94FDB155AA3B400BBD987 /* TwitterViewController.h */,
+				F4F94FDC155AA3B400BBD987 /* TwitterViewController.m */,
+				F4F94FDE155AA3DC00BBD987 /* TwitterViewController.xib */,
 				F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */,
 				F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */,
 				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
@@ -161,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4F94F01155A7EED00BBD987 /* InfoPlist.strings in Resources */,
+				F4F94FDF155AA3DC00BBD987 /* TwitterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +184,7 @@
 				F4F94F07155A7EED00BBD987 /* AppDelegate.m in Sources */,
 				F4F94F0F155A7EFA00BBD987 /* SMXTwitterEngine.m in Sources */,
 				F4F94F17155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */,
+				F4F94FDD155AA3B400BBD987 /* TwitterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +250,13 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SMXTwitterEngine/SMXTwitterEngine-Prefix.pch";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "SMXTwitterEngine/SMXTwitterEngine-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -252,8 +267,13 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SMXTwitterEngine/SMXTwitterEngine-Prefix.pch";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "SMXTwitterEngine/SMXTwitterEngine-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
