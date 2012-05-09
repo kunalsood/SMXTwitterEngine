@@ -40,6 +40,8 @@
 		F4F9501D155AA6DF00BBD987 /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95008155AA6DE00BBD987 /* OATokenManager.m */; };
 		F4F9501E155AA6DF00BBD987 /* README in Resources */ = {isa = PBXBuildFile; fileRef = F4F9500A155AA6DE00BBD987 /* README */; };
 		F4F95038155ABC1C00BBD987 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95037155ABC1C00BBD987 /* JSONKit.m */; };
+		F4F95042155AC07C00BBD987 /* THWebController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F4F9503F155AC07C00BBD987 /* THWebController.bundle */; };
+		F4F95043155AC07C00BBD987 /* THWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95041155AC07C00BBD987 /* THWebController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +107,9 @@
 		F4F9500A155AA6DE00BBD987 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		F4F95036155ABC1C00BBD987 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
 		F4F95037155ABC1C00BBD987 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
+		F4F9503F155AC07C00BBD987 /* THWebController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = THWebController.bundle; path = THWebViewController/THWebViewController/THWebController.bundle; sourceTree = SOURCE_ROOT; };
+		F4F95040155AC07C00BBD987 /* THWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = THWebController.h; path = THWebViewController/THWebViewController/THWebController.h; sourceTree = SOURCE_ROOT; };
+		F4F95041155AC07C00BBD987 /* THWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = THWebController.m; path = THWebViewController/THWebViewController/THWebController.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +170,7 @@
 				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
 				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
 				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
+				F4F9503E155AC06800BBD987 /* THWebViewController */,
 				F4F95035155ABC0B00BBD987 /* JSONKit */,
 				F4F94FE0155AA6DE00BBD987 /* OAuthConsumer */,
 				F4F94EFD155A7EED00BBD987 /* Supporting Files */,
@@ -256,6 +262,16 @@
 			path = ../OAuthConsumer;
 			sourceTree = "<group>";
 		};
+		F4F9503E155AC06800BBD987 /* THWebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				F4F9503F155AC07C00BBD987 /* THWebController.bundle */,
+				F4F95040155AC07C00BBD987 /* THWebController.h */,
+				F4F95041155AC07C00BBD987 /* THWebController.m */,
+			);
+			name = THWebViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -310,6 +326,7 @@
 				F4F94FDF155AA3DC00BBD987 /* TwitterViewController.xib in Resources */,
 				F4F9501B155AA6DF00BBD987 /* OATestServer.rb in Resources */,
 				F4F9501E155AA6DF00BBD987 /* README in Resources */,
+				F4F95042155AC07C00BBD987 /* THWebController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +361,7 @@
 				F4F9501C155AA6DF00BBD987 /* OAToken.m in Sources */,
 				F4F9501D155AA6DF00BBD987 /* OATokenManager.m in Sources */,
 				F4F95038155ABC1C00BBD987 /* JSONKit.m in Sources */,
+				F4F95043155AC07C00BBD987 /* THWebController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

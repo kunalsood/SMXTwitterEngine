@@ -14,6 +14,7 @@
 #import "OADataFetcher.h"
 #import "OAToken.h"
 
+#import "THWebController.h"
 #import "JSONKit.h"
 
 @interface SMXTwitterEngine () {
@@ -27,7 +28,7 @@
 
 @end
 
-@interface SMXTwitterEngineHandler : NSObject <UIWebViewDelegate, WebViewControllerDelegate>
+@interface SMXTwitterEngineHandler : NSObject
 
 @property (nonatomic, retain) NSString *tweet;
 @property (nonatomic) BOOL done;
@@ -40,6 +41,10 @@
 - (id) initWithPresentationController:(id)viewController tweet:(NSString *)tweet;
 - (void) postTweet;
 
+@end
+
+@interface SMXTwitterWebViewController : THWebController
+@property (nonatomic, assign) id twitterDelegate;
 @end
 
 @implementation SMXTwitterEngine
@@ -206,9 +211,9 @@
         
         NSURL *url = [NSURL URLWithString:address];
         
-        WebViewController *webViewController = [[WebViewController alloc] init];
-        [webViewController setUrl:url];
-        [webViewController setWebViewControllerDelegate:self];
+        SMXTwitterWebViewController *webViewController = [[SMXTwitterWebViewController alloc] init];
+        [webViewController setTwitterDelegate:self];
+        [webViewController openURL:url];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self.presentationViewController presentModalViewController:navigationController animated:YES];
         [webViewController release];
@@ -295,6 +300,22 @@
 {
     self.responseData = data;
     self.done = YES;
+}
+
+@end
+
+@implementation SMXTwitterWebViewController
+
+@synthesize twitterDelegate;
+
+- (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    return [self.twitterDelegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+}
+
+- (BOOL) shouldPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    return NO;
 }
 
 @end
