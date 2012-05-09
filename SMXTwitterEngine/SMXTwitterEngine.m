@@ -19,8 +19,6 @@
 
 + (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler;
 
-+ (NSString *) urlEncodeString:(NSString *)string;
-
 @end
 
 @implementation SMXTwitterEngine
@@ -86,7 +84,7 @@
 + (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler
 {
     TWRequest *twitterRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] 
-                                                    parameters:[NSDictionary dictionaryWithObject:[SMXTwitterEngine urlEncodeString:tweet] forKey:@"status"] 
+                                                    parameters:[NSDictionary dictionaryWithObject:tweet forKey:@"status"] 
                                                  requestMethod:TWRequestMethodPOST];
     [twitterRequest setAccount:account];
     
@@ -105,17 +103,6 @@
 + (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler
 {
     NSLog(@"Manually sending tweet");
-}
-
-// From: http://stackoverflow.com/q/6822473/891910
-+ (NSString *) urlEncodeString:(NSString *)string
-{
-    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                  (CFStringRef)string,
-                                                                                  NULL,
-                                                                                  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                  kCFStringEncodingUTF8);
-    return [encodedString autorelease];
 }
 
 @end
