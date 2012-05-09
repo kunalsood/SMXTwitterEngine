@@ -68,9 +68,7 @@
     Tweet *t = [[Tweet alloc] init];
     t.tweet = tweet;
     t.image = image;
-    
-    NSLog(@"IMAGE: %@", image);
-    
+        
     if (NSClassFromString(@"TWRequest") != nil){
         [SMXTwitterEngine useTwitterFrameworkToSendTweet:t completionHandler:handler];
     } else {
@@ -323,7 +321,13 @@
 {        
     OADataFetcher *fetcher = [[OADataFetcher alloc] init];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/statuses/update.json"]];
+    NSURL *url = nil;
+    
+    if (self.tweet.image == nil){
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/statuses/update.json"]];
+    } else {
+        url = [NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"];
+    }
     
     OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
                                                                    consumer:self.consumer
@@ -332,7 +336,32 @@
                                                           signatureProvider:nil] autorelease];
     
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[[NSString stringWithFormat:@"status=%@", [self.tweet.tweet encodedURLParameterString]] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    if (self.tweet.image == nil){
+        [request setHTTPBody:[[NSString stringWithFormat:@"status=%@", [self.tweet.tweet encodedURLParameterString]] dataUsingEncoding:NSUTF8StringEncoding]];
+    } else {
+        // From http://stackoverflow.com/a/7343889/891910
+        
+        NSString *boundary = @"----------------------------991990ee82f7";
+        
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+        [request setValue:contentType forHTTPHeaderField:@"content-type"];
+        
+        NSMutableData *body = [NSMutableData dataWithLength:0];
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"media[]\"; filename=\"media.png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:@"Content-Type: application/octet-stream\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];  
+        [body appendData:UIImagePNGRepresentation(self.tweet.image)];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"status\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:[NSString stringWithFormat:@"%@\r\n", self.tweet.tweet]] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+
+        [request setHTTPBody:body];
+    }
     
     [fetcher fetchDataWithRequest:request 
                          delegate:self
@@ -343,7 +372,7 @@
 - (void) apiTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data
 {
     self.responseDictionary = [[JSONDecoder decoder] objectWithData:data];
-    
+        
     if ([self.responseDictionary objectForKey:@"error"] != nil){
         self.error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:103 userInfo:[NSDictionary dictionaryWithObject:[self.responseDictionary objectForKey:@"error"] forKey:NSLocalizedDescriptionKey]];
     }
