@@ -127,16 +127,20 @@
 }
 
 + (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
-{    
-    SMXTwitterEngineHandler *engine = [[[SMXTwitterEngineHandler alloc] initWithPresentationController:[[[UIApplication sharedApplication] keyWindow] rootViewController] tweet:tweet] autorelease];
-
-    do {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    } while (!engine.done);
-    
-    NSDictionary *response = [[JSONDecoder decoder] objectWithData:engine.responseData];
-    
-    handler(response, engine.error);
+{   
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(){
+        SMXTwitterEngineHandler *engine = [[[SMXTwitterEngineHandler alloc] initWithPresentationController:[[[UIApplication sharedApplication] keyWindow] rootViewController] tweet:tweet] autorelease];
+        
+        do {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        } while (!engine.done);
+        
+        NSDictionary *response = [[JSONDecoder decoder] objectWithData:engine.responseData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            handler(response, engine.error);
+        });
+    });
 }
 
 + (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback
@@ -211,13 +215,15 @@
         
         NSURL *url = [NSURL URLWithString:address];
         
-        SMXTwitterWebViewController *webViewController = [[SMXTwitterWebViewController alloc] init];
-        [webViewController setTwitterDelegate:self];
-        [webViewController openURL:url];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        [self.presentationViewController presentModalViewController:navigationController animated:YES];
-        [webViewController release];
-        [navigationController release];
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            SMXTwitterWebViewController *webViewController = [[SMXTwitterWebViewController alloc] init];
+            [webViewController setTwitterDelegate:self];
+            [webViewController openURL:url];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+            [self.presentationViewController presentModalViewController:navigationController animated:YES];
+            [webViewController release];
+            [navigationController release]; 
+        });
     }
 }
 
@@ -255,7 +261,9 @@
                     didFinishSelector:@selector(accessTokenTicket:didFinishWithData:)
                       didFailSelector:@selector(accessTokenTicket:didFailWithError:)];
         
-        [self.presentationViewController dismissModalViewControllerAnimated:YES];
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            [self.presentationViewController dismissModalViewControllerAnimated:YES];
+        });
         
         return NO;
     }
