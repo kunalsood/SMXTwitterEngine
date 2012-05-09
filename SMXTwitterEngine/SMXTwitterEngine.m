@@ -13,17 +13,17 @@
 
 @interface SMXTwitterEngine ()
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler;
-+ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler;
++ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 
-+ (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler;
++ (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 @end
 
 @implementation SMXTwitterEngine
 
-+ (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(id response, NSError *error))handler
++ (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     if (NSClassFromString(@"TWRequest") != nil){
         [SMXTwitterEngine useTwitterFrameworkToSendTweet:tweet completionHandler:handler];
@@ -32,7 +32,7 @@
     }
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler
++ (void) useTwitterFrameworkToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     
@@ -81,7 +81,7 @@
      ];
 }
 
-+ (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler
++ (void) useAccount:(ACAccount *)account toSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     TWRequest *twitterRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] 
                                                     parameters:[NSDictionary dictionaryWithObject:tweet forKey:@"status"] 
@@ -93,14 +93,14 @@
         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&jsonError];
         
         if (jsonError){
-            
+            handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:102 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Error parsing response from Twitter", @"Error parsing response from Twitter error message") forKey:NSLocalizedDescriptionKey]]);
         } else {
             handler(responseDictionary, nil);
         }
     }];
 }
 
-+ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(id response, NSError *error))handler
++ (void) useManualOauthToSendTweet:(NSString *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     NSLog(@"Manually sending tweet");
 }
