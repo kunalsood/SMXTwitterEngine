@@ -51,7 +51,7 @@
                                             [SMXTwitterEngine useAccount:[accounts objectAtIndex:0] toSendTweet:tweet completionHandler:handler];
                                         } else {
                                             // More than one account set up. Let's ask which one we should use...
-                                            NSArray *titles = [accounts valueForKeyPath:@"username"];
+                                            NSArray *titles = [accounts valueForKeyPath:@"accountDescription"];
                                             
                                             [UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose a Twitter account", @"Choose a Twitter account alert title") 
                                                                     message:nil
