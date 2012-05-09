@@ -16,6 +16,7 @@
 		F4F94F0F155A7EFA00BBD987 /* SMXTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */; };
 		F4F94F11155A7F4200BBD987 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94F10155A7F4200BBD987 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F4F94F13155A7F9400BBD987 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94F12155A7F9400BBD987 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F4F94F17155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,9 @@
 		F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMXTwitterEngine.m; sourceTree = "<group>"; };
 		F4F94F10155A7F4200BBD987 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		F4F94F12155A7F9400BBD987 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKBlockAdditions.h; path = MKBlockAdditions/MKAdditions/MKBlockAdditions.h; sourceTree = SOURCE_ROOT; };
+		F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+MKBlockAdditions.h"; path = "MKBlockAdditions/MKAdditions/UIAlertView+MKBlockAdditions.h"; sourceTree = SOURCE_ROOT; };
+		F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIAlertView+MKBlockAdditions.m"; path = "MKBlockAdditions/MKAdditions/UIAlertView+MKBlockAdditions.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,9 @@
 				F4F94F06155A7EED00BBD987 /* AppDelegate.m */,
 				F4F94F0D155A7EFA00BBD987 /* SMXTwitterEngine.h */,
 				F4F94F0E155A7EFA00BBD987 /* SMXTwitterEngine.m */,
+				F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */,
+				F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */,
+				F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */,
 				F4F94EFD155A7EED00BBD987 /* Supporting Files */,
 			);
 			path = SMXTwitterEngine;
@@ -167,6 +174,7 @@
 				F4F94F03155A7EED00BBD987 /* main.m in Sources */,
 				F4F94F07155A7EED00BBD987 /* AppDelegate.m in Sources */,
 				F4F94F0F155A7EFA00BBD987 /* SMXTwitterEngine.m in Sources */,
+				F4F94F17155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
