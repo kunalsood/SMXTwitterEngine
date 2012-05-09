@@ -392,6 +392,13 @@
 
 @synthesize twitterDelegate;
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
+}
+
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     return [self.twitterDelegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
@@ -400,6 +407,15 @@
 - (BOOL) shouldPresentActionSheet:(UIActionSheet *)actionSheet
 {
     return NO;
+}
+
+- (void) cancel
+{
+    ((SMXTwitterEngineHandler *)self.twitterDelegate).error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]];
+    ((SMXTwitterEngineHandler *)self.twitterDelegate).done = YES;
+    
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+    
 }
 
 @end
