@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4986FA1155BAF0B003657BF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF8155A7EED00BBD987 /* Foundation.framework */; };
+		C4986FAB155BAF49003657BF /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE9155AA6DE00BBD987 /* Base64Transcoder.c */; };
 		F41DCE0E155ACC900004F697 /* Tweet.h in Headers */ = {isa = PBXBuildFile; fileRef = F41DCE0C155ACC900004F697 /* Tweet.h */; };
 		F41DCE0F155ACC900004F697 /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = F41DCE0D155ACC900004F697 /* Tweet.m */; };
 		F41DCE15155AD0BA0004F697 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = F41DCE14155AD0BA0004F697 /* apple.png */; };
@@ -31,7 +33,6 @@
 		F4F9505D155AC6A900BBD987 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE3155AA6DE00BBD987 /* NSMutableURLRequest+Parameters.m */; };
 		F4F9505E155AC6A900BBD987 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE5155AA6DE00BBD987 /* NSString+URLEncoding.m */; };
 		F4F9505F155AC6A900BBD987 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE7155AA6DE00BBD987 /* NSURL+Base.m */; };
-		F4F95060155AC6A900BBD987 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE9155AA6DE00BBD987 /* Base64Transcoder.c */; };
 		F4F95061155AC6A900BBD987 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FEB155AA6DE00BBD987 /* hmac.c */; };
 		F4F95062155AC6A900BBD987 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FED155AA6DE00BBD987 /* sha1.c */; };
 		F4F95063155AC6A900BBD987 /* OAAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF0155AA6DE00BBD987 /* OAAttachment.m */; };
@@ -73,6 +74,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C4986FAC155BAF55003657BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4F94EE9155A7EED00BBD987 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4986F9F155BAF0B003657BF;
+			remoteInfo = libBase64Transcoder;
+		};
 		F4F95071155AC6D100BBD987 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4F94EE9155A7EED00BBD987 /* Project object */;
@@ -83,6 +91,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C4986FA0155BAF0B003657BF /* liblibBase64Transcoder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibBase64Transcoder.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4986FA4155BAF0B003657BF /* libBase64Transcoder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "libBase64Transcoder-Prefix.pch"; sourceTree = "<group>"; };
 		F41DCE0C155ACC900004F697 /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
 		F41DCE0D155ACC900004F697 /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
 		F41DCE14155AD0BA0004F697 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
@@ -156,6 +166,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C4986F9D155BAF0B003657BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4986FA1155BAF0B003657BF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4F94EEF155A7EED00BBD987 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -180,6 +198,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C4986FA2155BAF0B003657BF /* libBase64Transcoder */ = {
+			isa = PBXGroup;
+			children = (
+				C4986FA3155BAF0B003657BF /* Supporting Files */,
+			);
+			path = libBase64Transcoder;
+			sourceTree = "<group>";
+		};
+		C4986FA3155BAF0B003657BF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C4986FA4155BAF0B003657BF /* libBase64Transcoder-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		F41DCE13155ACEB90004F697 /* MKBlockAdditions */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +229,7 @@
 			children = (
 				F4F94EFC155A7EED00BBD987 /* SMXTwitterEngine */,
 				F4F9504A155AC63D00BBD987 /* libSMXTwitterEngine */,
+				C4986FA2155BAF0B003657BF /* libBase64Transcoder */,
 				F4F94EF5155A7EED00BBD987 /* Frameworks */,
 				F4F94EF3155A7EED00BBD987 /* Products */,
 			);
@@ -205,6 +240,7 @@
 			children = (
 				F4F94EF2155A7EED00BBD987 /* SMXTwitterEngine.app */,
 				F4F95048155AC63D00BBD987 /* liblibSMXTwitterEngine.a */,
+				C4986FA0155BAF0B003657BF /* liblibBase64Transcoder.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -357,6 +393,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		C4986F9E155BAF0B003657BF /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4F95046155AC63D00BBD987 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -393,6 +436,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		C4986F9F155BAF0B003657BF /* libBase64Transcoder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4986FA8155BAF0B003657BF /* Build configuration list for PBXNativeTarget "libBase64Transcoder" */;
+			buildPhases = (
+				C4986F9C155BAF0B003657BF /* Sources */,
+				C4986F9D155BAF0B003657BF /* Frameworks */,
+				C4986F9E155BAF0B003657BF /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libBase64Transcoder;
+			productName = libBase64Transcoder;
+			productReference = C4986FA0155BAF0B003657BF /* liblibBase64Transcoder.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		F4F94EF1155A7EED00BBD987 /* SMXTwitterEngine */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4F94F0A155A7EED00BBD987 /* Build configuration list for PBXNativeTarget "SMXTwitterEngine" */;
@@ -422,6 +482,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C4986FAD155BAF55003657BF /* PBXTargetDependency */,
 			);
 			name = libSMXTwitterEngine;
 			productName = libSMXTwitterEngine;
@@ -450,6 +511,7 @@
 			targets = (
 				F4F94EF1155A7EED00BBD987 /* SMXTwitterEngine */,
 				F4F95047155AC63D00BBD987 /* libSMXTwitterEngine */,
+				C4986F9F155BAF0B003657BF /* libBase64Transcoder */,
 			);
 		};
 /* End PBXProject section */
@@ -469,6 +531,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C4986F9C155BAF0B003657BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4986FAB155BAF49003657BF /* Base64Transcoder.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4F94EEE155A7EED00BBD987 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -489,7 +559,6 @@
 				F4F9505D155AC6A900BBD987 /* NSMutableURLRequest+Parameters.m in Sources */,
 				F4F9505E155AC6A900BBD987 /* NSString+URLEncoding.m in Sources */,
 				F4F9505F155AC6A900BBD987 /* NSURL+Base.m in Sources */,
-				F4F95060155AC6A900BBD987 /* Base64Transcoder.c in Sources */,
 				F4F95061155AC6A900BBD987 /* hmac.c in Sources */,
 				F4F95062155AC6A900BBD987 /* sha1.c in Sources */,
 				F4F95063155AC6A900BBD987 /* OAAttachment.m in Sources */,
@@ -512,6 +581,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C4986FAD155BAF55003657BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C4986F9F155BAF0B003657BF /* libBase64Transcoder */;
+			targetProxy = C4986FAC155BAF55003657BF /* PBXContainerItemProxy */;
+		};
 		F4F95072155AC6D100BBD987 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F4F95047155AC63D00BBD987 /* libSMXTwitterEngine */;
@@ -531,6 +605,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C4986FA9155BAF0B003657BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/libBase64Transcoder.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "libBase64Transcoder/libBase64Transcoder-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C4986FAA155BAF0B003657BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/libBase64Transcoder.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "libBase64Transcoder/libBase64Transcoder-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		F4F94F08155A7EED00BBD987 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -637,6 +735,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C4986FA8155BAF0B003657BF /* Build configuration list for PBXNativeTarget "libBase64Transcoder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4986FA9155BAF0B003657BF /* Debug */,
+				C4986FAA155BAF0B003657BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		F4F94EEC155A7EED00BBD987 /* Build configuration list for PBXProject "SMXTwitterEngine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
