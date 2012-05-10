@@ -59,7 +59,16 @@ Add -ObjC and -all_load to your "Other Linker Flags".
 You'll also need to link against Twitter.framework and Accounts.framework. If you plan to support iOS 4.x, you'll
 need to make sure those are optional frameworks (weakly linked).
 
-Finally, make sure that THWebController.bundle is in your "Copy Bundle Resources" Build Phase.
+Add "SMXTwitterEngine" to your Header Search Paths, and then make sure that THWebController.bundle is in your 
+"Copy Bundle Resources" Build Phase.
+
+Finally:
+
+```objc
+#import <libSMXTwitterEngine/SMXTwitterEngine.h>
+```
+
+And you're good to go!
 
 ## Demo
 
