@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>SMXTwitterEngine by o2Labs</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>SMXTwitterEngine</h1>
+        <p>An easy to use Twitter library for iOS 4 and 5</p>
+        <p class="view"><a href="https://github.com/o2Labs/SMXTwitterEngine">View the Project on GitHub <small>o2Labs/SMXTwitterEngine</small></a></p>
+        <ul>
+          <li><a href="https://github.com/o2Labs/SMXTwitterEngine/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/o2Labs/SMXTwitterEngine/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/o2Labs/SMXTwitterEngine">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>After being annoyed by the complexity of other Twitter libraries for iOS, I built this. It only
+supports posting a Tweet, and I've no intention of supporting the other capabilities in Twitter.</p>
+
+<p>It uses iOS5's Twitter framework when running on a device that supports it, but falls back
+to good a old fashioned UIWebView if the device is running 4.x or there are no Twitter accounts
+configured in iOS.</p>
+
+<p>If you only want to use it on iOS5, it's really simple:</p>
+
+<div class="highlight">
+<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">sendTweet:</span><span class="s">@"This is a tweet"</span> <span class="nl">withCompletionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Response: %@"</span><span class="p">,</span> <span class="n">response</span><span class="p">);</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Error: %@"</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+<span class="p">}];</span>
+</pre>
+</div>
+
+
+<p>Want to attach an image? Easy:</p>
+
+<div class="highlight">
+<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">sendTweet:</span><span class="s">@"This is a tweet"</span> <span class="nl">andImage:</span><span class="n">myImage</span> <span class="nl">withCompletionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Response: %@"</span><span class="p">,</span> <span class="n">response</span><span class="p">);</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Error: %@"</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+<span class="p">}];</span>
+</pre>
+</div>
+
+
+<p>If you're planning on running on devices running 4.x, you'll also need:</p>
+
+<div class="highlight">
+<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">setConsumerKey:</span><span class="s">@"KEY"</span> <span class="nl">consumerSecret:</span><span class="s">@"SECRET"</span> <span class="nl">callback:</span><span class="s">@"CALLBACK"</span><span class="p">];</span>
+</pre>
+</div>
+
+
+<p>You'll need to get your consumer key, consumer secret and callback set up <a href="http://dev.twitter.com/apps">here</a>. 
+Don't forget to make the application "Read &amp; Write".</p>
+
+<p>Would you rather use a Tweet Sheet on iOS 5 if possible? Easy:</p>
+
+<div class="highlight">
+<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">setUseTweetComposeSheetIfPossible:</span><span class="n">YES</span><span class="p">];</span>
+</pre>
+</div>
+
+
+<p>NOTE: Using a Tweet sheet will return an empty NSDictionary to your completion handler, since iOS doesn't make any
+information about the posted tweet available.</p>
+
+<h2>Installing</h2>
+
+<p>First, grab the submodules:</p>
+
+<pre><code>git submodule update --init
+</code></pre>
+
+<p>Then, drag the SMXTwitterEngine Xcode project into your project. Add libSMXTwitterEngine as a dependency,
+and make sure to link against it.</p>
+
+<p>Add -ObjC and -all_load to your "Other Linker Flags".</p>
+
+<p>You'll also need to link against Twitter.framework and Accounts.framework. If you plan to support iOS 4.x, you'll
+need to make sure those are optional frameworks (weakly linked).</p>
+
+<p>Add "SMXTwitterEngine" to your Header Search Paths, and then make sure that THWebController.bundle is in your 
+"Copy Bundle Resources" Build Phase.</p>
+
+<p>Finally:</p>
+
+<div class="highlight">
+<pre><span class="cp">#import &lt;libSMXTwitterEngine/SMXTwitterEngine.h&gt;</span>
+</pre>
+</div>
+
+
+<p>And you're good to go!</p>
+
+<h2>Demo</h2>
+
+<p>Have a look at the example project for a working demo.</p>
+
+<h2>ARC</h2>
+
+<p>As much as I'd love to use ARC, requiring iOS 4.0 support means I can't :(
+SMXTwitterEngine does, however, still work in an ARC enabled application.</p>
+
+<h2>iOS 3</h2>
+
+<p>Since iOS 3 doesn't support blocks, it is currently not supported. Feel free to issue a pull request ;)</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/o2Labs">o2Labs</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
