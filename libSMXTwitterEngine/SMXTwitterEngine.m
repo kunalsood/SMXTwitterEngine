@@ -53,7 +53,7 @@
 
 + (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 {
-    Tweet *t = [[Tweet alloc] init];
+    Tweet *t = [[[Tweet alloc] init] autorelease];
     t.tweet = tweet;
     
     if (NSClassFromString(@"TWRequest") != nil){
@@ -65,7 +65,7 @@
 
 + (void) sendTweet:(NSString *)tweet andImage:(UIImage *)image withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
-    Tweet *t = [[Tweet alloc] init];
+    Tweet *t = [[[Tweet alloc] init] autorelease];
     t.tweet = tweet;
     t.image = image;
         
@@ -422,7 +422,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)] autorelease];
 }
 
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
