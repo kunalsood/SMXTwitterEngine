@@ -95,7 +95,11 @@
                     handler([NSDictionary dictionary], error);
                 });
             }];
-            [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentModalViewController:tweetComposeViewController animated:YES]; 
+            UIViewController *baseViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            while ([baseViewController modalViewController]) {
+                baseViewController = [baseViewController modalViewController];
+            }
+            [baseViewController presentModalViewController:tweetComposeViewController animated:YES]; 
         });
     } else {
         ACAccountStore *accountStore = [[ACAccountStore alloc] init];
