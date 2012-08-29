@@ -16,6 +16,7 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [self.tweetField becomeFirstResponder];
+	
 	[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *object, NSError *error) {
 		NSLog(@"%@", object);
 	}];

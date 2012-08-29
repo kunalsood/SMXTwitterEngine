@@ -105,7 +105,9 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 											// More than one account set up. Let's ask which one we should use...
 											NSArray *accountTitles = [accounts valueForKeyPath:@"accountDescription"];
 											NSMutableArray *titles = [NSMutableArray arrayWithArray:accountTitles];
-											[titles addObject:NSLocalizedString(@"Another Account", @"Another Account alert title")];
+											if ([[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerKey"] != nil){
+												[titles addObject:NSLocalizedString(@"Another Account", @"Another Account alert title")];
+											}
 											
 											dispatch_async(dispatch_get_main_queue(), ^(){
 												[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose a Twitter account", @"Choose a Twitter account alert title")
@@ -113,7 +115,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 															  cancelButtonTitle:NSLocalizedString(@"Cancel", @"Choose a Twitter account alert cancel button")
 															  otherButtonTitles:titles
 																	  onDismiss:^(int buttonIndex){
-																		  if (buttonIndex == (titles.count - 1)){
+																		  if ([[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerKey"] != nil && buttonIndex == (titles.count - 1)){
 																			  handler(nil, nil);
 																		  } else {
 																			  handler([accounts objectAtIndex:buttonIndex], nil);
