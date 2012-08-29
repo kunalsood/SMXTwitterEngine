@@ -20,7 +20,7 @@
 
 #import "SMXURLConnection.h"
 
-typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
+typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError *error);
 
 @interface SMXTwitterEngine () {
 }
@@ -59,11 +59,15 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 						  }];
 			} else if (account == nil && error == nil){ // use manual OAuth
 				[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
-					[SMXTwitterEngine postTweet:t usingAccessToken:accessToken completionHandler:^(NSDictionary *response, NSError *error) {
-						dispatch_async(dispatch_get_main_queue(), ^(){
-							handler(response, error);
-						});
-					}];
+					if (error){
+						handler(nil, error);
+					} else {
+						[SMXTwitterEngine postTweet:t usingAccessToken:accessToken completionHandler:^(NSDictionary *response, NSError *error) {
+							dispatch_async(dispatch_get_main_queue(), ^(){
+								handler(response, error);
+							});
+						}];
+					}
 				}];
 			} else {
 				dispatch_async(dispatch_get_main_queue(), ^(){
@@ -248,34 +252,37 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 									   }
 									   
 									   SMXTwitterWebViewController *webViewController = [[SMXTwitterWebViewController alloc] init];
-									   [webViewController setAuthorizedHandler:^(NSDictionary *parameters){
-										   [token setVerifier:[parameters objectForKey:@"oauth_verifier"]];
-										   
-										   
-										   NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
-										   
-										   OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
-																										   consumer:consumer
-																											  token:token
-																											  realm:nil
-																								  signatureProvider:nil] autorelease];
-										   
-										   [request setHTTPMethod:@"POST"];
-										   [request prepare];
-										   
-										   
-										   
-										   [NSURLConnection sendAsynchronousRequest:request
-																			  queue:[NSOperationQueue mainQueue]
-																  completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-																	  NSString *responseBody = [[[NSString alloc] initWithData:data
-																													  encoding:NSUTF8StringEncoding] autorelease];
-																	  
-																	  OAToken *accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
-																	  [accessToken storeInUserDefaultsWithServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
-																	  handler(accessToken, nil);
-																  }];
-										   
+									   [webViewController setAuthorizedHandler:^(NSDictionary *parameters, NSError *error){
+										   if (error){
+											   handler(nil, error);
+										   } else {
+											   [token setVerifier:[parameters objectForKey:@"oauth_verifier"]];
+											   
+											   
+											   NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
+											   
+											   OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+																											   consumer:consumer
+																												  token:token
+																												  realm:nil
+																									  signatureProvider:nil] autorelease];
+											   
+											   [request setHTTPMethod:@"POST"];
+											   [request prepare];
+											   
+											   
+											   
+											   [NSURLConnection sendAsynchronousRequest:request
+																				  queue:[NSOperationQueue mainQueue]
+																	  completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+																		  NSString *responseBody = [[[NSString alloc] initWithData:data
+																														  encoding:NSUTF8StringEncoding] autorelease];
+																		  
+																		  OAToken *accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
+																		  [accessToken storeInUserDefaultsWithServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
+																		  handler(accessToken, nil);
+																	  }];
+										   }
 										   
 									   }];
 									   [webViewController openURL:url];
@@ -429,7 +436,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
         }
 		
 		if (self.authorizedHandler != nil){
-			self.authorizedHandler(parameters);
+			self.authorizedHandler(parameters, nil);
 			[self.navigationController dismissModalViewControllerAnimated:YES];
 		}
 		return NO;
@@ -445,10 +452,9 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 
 - (void) cancel
 {
-    /*((SMXTwitterEngineHandler *)self.twitterDelegate).error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]];
-    ((SMXTwitterEngineHandler *)self.twitterDelegate).done = YES;
+	self.authorizedHandler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]]);
     
-    [self.navigationController dismissModalViewControllerAnimated:YES];*/
+    [self.navigationController dismissModalViewControllerAnimated:YES];
     
 }
 
