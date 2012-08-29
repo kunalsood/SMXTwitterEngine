@@ -1,13 +1,12 @@
 # SMXTwitterEngine
 
-After being annoyed by the complexity of other Twitter libraries for iOS, I built this. It only
-supports posting a Tweet, and I've no intention of supporting the other capabilities in Twitter.
+After being annoyed by the complexity of other Twitter libraries for iOS, I built this. It supports
+posting a tweet, and receiving a user's stream.
 
 It uses iOS5's Twitter framework when running on a device that supports it, but falls back
-to good a old fashioned UIWebView if the device is running 4.x or there are no Twitter accounts
-configured in iOS.
+to good a old fashioned UIWebView if there are no Twitter accounts configured in iOS.
 
-If you only want to use it on iOS5, it's really simple:
+It's really simple to use:
 
 ``` objc
 [SMXTwitterEngine sendTweet:@"This is a tweet" withCompletionHandler:^(NSDictionary *response, NSError *error){
@@ -25,7 +24,7 @@ Want to attach an image? Easy:
 }];
 ```
 
-If you're planning on running on devices running 4.x, you'll also need:
+If you want to allow users to choose an account not in their Twitter settings:
 
 ``` objc
 [SMXTwitterEngine setConsumerKey:@"KEY" consumerSecret:@"SECRET" callback:@"CALLBACK"];
@@ -42,6 +41,17 @@ Would you rather use a Tweet Sheet on iOS 5 if possible? Easy:
 
 NOTE: Using a Tweet sheet will return an empty NSDictionary to your completion handler, since iOS doesn't make any
 information about the posted tweet available.
+
+Want to receive a stream of tweets?
+
+```objc
+[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *object, NSError *error) {
+	NSLog(@"Object: %@", object);
+}];
+```
+
+That's it! SMXTwitterEngine will handle all authentication for you, so you don't need to worry about a thing!
+
 
 ## Installing
 
