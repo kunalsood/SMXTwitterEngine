@@ -18,7 +18,12 @@
     [self.tweetField becomeFirstResponder];
 	
 	[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *object, NSError *error) {
-		NSLog(@"%@", object);
+		if (error){
+			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];
+            [alert show];
+		} else {
+			NSLog(@"%@", object);
+		}
 	}];
 }
 
