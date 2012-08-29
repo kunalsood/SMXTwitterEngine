@@ -21,38 +21,22 @@
 
 #import "SMXURLConnection.h"
 
+typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
+
 @interface SMXTwitterEngine () {
 }
-
-+ (void) useManualOauthToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
-
 
 + (void) useAccount:(ACAccount *)account toSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 @end
 
-@interface SMXTwitterEngineHandler : NSObject
-
-@property (nonatomic, retain) Tweet *tweet;
-@property (nonatomic) BOOL done;
-@property (nonatomic, retain) NSError *error;
-@property (nonatomic, strong) id presentationViewController;
-@property (nonatomic, strong) OAConsumer *consumer;
-@property (nonatomic, strong) OAToken *accessToken;
-@property (nonatomic, strong) NSDictionary *responseDictionary;
-
-- (id) initWithPresentationController:(id)viewController tweet:(Tweet *)tweet;
-- (void) postTweet;
-
-@end
-
 @interface SMXTwitterWebViewController : THWebController
-@property (nonatomic, assign) id twitterDelegate;
+@property (nonatomic, copy) TwitterWebViewAuthorizedHandler authorizedHandler;
 @end
 
 @implementation SMXTwitterEngine
 
-#pragma mark - Send Tweet
+#pragma mark - Post Tweet
 
 + (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 {
@@ -76,7 +60,13 @@
 								  handler(response, error);
 							  }];
 				} else if (account == nil && error == nil){ // use manual OAuth
-					
+					[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
+						[SMXTwitterEngine postTweet:t usingAccessToken:accessToken completionHandler:^(NSDictionary *response, NSError *error) {
+							dispatch_async(dispatch_get_main_queue(), ^(){
+								handler(response, error);
+							});
+						}];
+					}];
 				} else {
 					dispatch_async(dispatch_get_main_queue(), ^(){
 						handler(nil, error);
@@ -92,9 +82,17 @@
 									   }];
 		}
     } else {
-        [SMXTwitterEngine useManualOauthToSendTweet:t completionHandler:handler];
+		[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
+			[SMXTwitterEngine postTweet:t usingAccessToken:accessToken completionHandler:^(NSDictionary *response, NSError *error) {
+				dispatch_async(dispatch_get_main_queue(), ^(){
+					handler(response, error);
+				});
+			}];
+		}];
     }
 }
+
+#pragma mark Twitter.framework
 
 + (void) chooseAccountWithCompletionHandler:(void (^)(ACAccount *account, NSError *error))handler
 {
@@ -207,19 +205,150 @@
     }];
 }
 
-+ (void) useManualOauthToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
-{   
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(){
-        SMXTwitterEngineHandler *engine = [[[SMXTwitterEngineHandler alloc] initWithPresentationController:[[[UIApplication sharedApplication] keyWindow] rootViewController] tweet:tweet] autorelease];
+#pragma mark OAuth
+
++ (OAConsumer *) oAuthConsumer
+{
+	NSString *key = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerKey"];
+	NSString *secret = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerSecret"];
+	
+	return [[[OAConsumer alloc] initWithKey:key secret:secret] autorelease];
+}
+
++ (void) fetchAccessTokenWithCompletionHandler:(void (^)(OAToken *accessToken, NSError *error))handler
+{
+	OAToken *token = [[[OAToken alloc] initWithUserDefaultsUsingServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil] autorelease];
+	if (token.isValid){
+		handler(token, nil);
+	} else {
+	
+		NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/request_token"];
+		
+		__block OAConsumer *consumer = [SMXTwitterEngine oAuthConsumer];
+		
+		OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
+																		consumer:consumer
+																		   token:nil
+																		   realm:nil
+															   signatureProvider:nil];
+		
+		[request setHTTPMethod:@"POST"];
+		[request prepare];
+		
+		[NSURLConnection sendAsynchronousRequest:request
+										   queue:[NSOperationQueue mainQueue]
+							   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+								   NSString *responseBody = [[[NSString alloc] initWithData:data
+																				   encoding:NSUTF8StringEncoding] autorelease];
+								   
+								   __block OAToken *token = [[OAToken alloc] initWithHTTPResponseBody:responseBody];
+								   
+								   NSString *address = [NSString stringWithFormat:
+														@"https://api.twitter.com/oauth/authorize?oauth_token=%@",
+														token.key];
+								   
+								   NSURL *url = [NSURL URLWithString:address];
+								   
+								   dispatch_async(dispatch_get_main_queue(), ^(){
+									   
+									   UIViewController *presentationViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+									   while ([presentationViewController modalViewController]) {
+										   presentationViewController = [presentationViewController modalViewController];
+									   }
+									   
+									   SMXTwitterWebViewController *webViewController = [[SMXTwitterWebViewController alloc] init];
+									   [webViewController setAuthorizedHandler:^(NSDictionary *parameters){
+										   [token setVerifier:[parameters objectForKey:@"oauth_verifier"]];
+										   
+										   
+										   NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
+										   
+										   OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+																										   consumer:consumer
+																											  token:token
+																											  realm:nil
+																								  signatureProvider:nil] autorelease];
+										   
+										   [request setHTTPMethod:@"POST"];
+										   [request prepare];
+										   
+										   
+										   
+										   [NSURLConnection sendAsynchronousRequest:request
+																			  queue:[NSOperationQueue mainQueue]
+																  completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+																	  NSString *responseBody = [[[NSString alloc] initWithData:data
+																													  encoding:NSUTF8StringEncoding] autorelease];
+																	  
+																	  OAToken *accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
+																	  [accessToken storeInUserDefaultsWithServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
+																	  handler(accessToken, nil);
+																  }];
+										   
+										   
+									   }];
+									   [webViewController openURL:url];
+									   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+									   [presentationViewController presentModalViewController:navigationController animated:YES];
+									   [webViewController release];
+									   [navigationController release];
+								   });
+								   
+							   }];
+	}
+}
+
++ (void) postTweet:(Tweet *)tweet usingAccessToken:(OAToken *)accessToken completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
+{
+	NSURL *url = nil;
+    
+    if (tweet.image == nil){
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/statuses/update.json"]];
+    } else {
+        url = [NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"];
+    }
+    
+    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+																	consumer:[SMXTwitterEngine oAuthConsumer]
+																	   token:accessToken
+																	   realm:nil
+														   signatureProvider:nil] autorelease];
+    
+    [request setHTTPMethod:@"POST"];
+    
+    if (tweet.image == nil){
+        [request setHTTPBody:[[NSString stringWithFormat:@"status=%@", [tweet.tweet encodedURLParameterString]] dataUsingEncoding:NSUTF8StringEncoding]];
+    } else {
+        // From http://stackoverflow.com/a/7343889/891910
         
-        do {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-        } while (!engine.done);
+        NSString *boundary = @"----------------------------991990ee82f7";
         
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            handler(engine.responseDictionary, engine.error);
-        });
-    });
+        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+        [request setValue:contentType forHTTPHeaderField:@"content-type"];
+        
+        NSMutableData *body = [NSMutableData dataWithLength:0];
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        [body appendData:[@"Content-Disposition: form-data; name=\"media[]\"; filename=\"media.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Type: application/octet-stream\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:UIImagePNGRepresentation(tweet.image)];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Disposition: form-data; name=\"status\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithString:[NSString stringWithFormat:@"%@\r\n", tweet.tweet]] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+		
+        [request setHTTPBody:body];
+    }
+	
+	[request prepare];
+	
+	[NSURLConnection sendAsynchronousRequest:request
+									   queue:[NSOperationQueue mainQueue]
+						   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+							   handler([NSJSONSerialization JSONObjectWithData:data options:0 error:nil], error);
+						   }];
 }
 
 + (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback
@@ -247,7 +376,7 @@
 		}
 	}];
 	[connection setCompletionHandler:^(NSError *error) {
-		
+		NSLog(@"Done streaming");
 	}];
 	[connection start];
 }
@@ -255,204 +384,8 @@
 @end
 
 
-@implementation SMXTwitterEngineHandler
-
-@synthesize done, error, presentationViewController, accessToken, consumer, tweet, responseDictionary;
-
-- (id) initWithPresentationController:(id)viewController tweet:(Tweet *)aTweet
-{
-    if (self = [super init]){
-        
-        self.presentationViewController = viewController;
-        self.tweet = aTweet;
-        
-        NSString *key = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerKey"];
-        NSString *secret = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerSecret"];
-        
-        
-        self.consumer = [[[OAConsumer alloc] initWithKey:key
-                                                        secret:secret] autorelease];
-        
-        OAToken *token = [[[OAToken alloc] initWithUserDefaultsUsingServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil] autorelease];
-        
-        if (token.isValid){
-            self.accessToken = token;
-            [self postTweet];
-        } else {
-            
-            OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
-            
-            NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/request_token"];
-            
-            OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
-                                                                           consumer:consumer
-                                                                              token:nil
-                                                                              realm:nil
-                                                                  signatureProvider:nil] autorelease];
-            
-            [request setHTTPMethod:@"POST"];
-            
-            [fetcher fetchDataWithRequest:request 
-                                 delegate:self
-                        didFinishSelector:@selector(requestTokenTicket:didFinishWithData:)
-                          didFailSelector:@selector(requestTokenTicket:didFailWithError:)];
-        }
-    }
-    
-    return self;
-}
-
-- (void) requestTokenTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data
-{
-    if (ticket.didSucceed)
-    {
-        NSString *responseBody = [[[NSString alloc] initWithData:data 
-                                                       encoding:NSUTF8StringEncoding] autorelease];
-        
-        self.accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
-        
-        NSString *address = [NSString stringWithFormat:
-                             @"https://api.twitter.com/oauth/authorize?oauth_token=%@",
-                             self.accessToken.key];
-        
-        NSURL *url = [NSURL URLWithString:address];
-        
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            SMXTwitterWebViewController *webViewController = [[SMXTwitterWebViewController alloc] init];
-            [webViewController setTwitterDelegate:self];
-            [webViewController openURL:url];
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-            [self.presentationViewController presentModalViewController:navigationController animated:YES];
-            [webViewController release];
-            [navigationController release]; 
-        });
-    }
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    if ([[[request URL] absoluteString] rangeOfString:[[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineCallback"]].length > 0){
-        
-        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-                
-        NSArray *urlPieces = [[[request URL] absoluteString] componentsSeparatedByString:@"?"];
-        
-        NSArray *params = [[urlPieces objectAtIndex:1] componentsSeparatedByString:@"&"];
-        
-        for (NSString *p in params){
-            NSArray *pieces = [p componentsSeparatedByString:@"="];
-            [parameters setObject:[pieces objectAtIndex:1] forKey:[pieces objectAtIndex:0]];
-        }
-                        
-        [self.accessToken setVerifier:[parameters objectForKey:@"oauth_verifier"]];
-        
-        OADataFetcher *fetcher = [[OADataFetcher alloc] init];
-        
-        NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
-                
-        OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
-                                                                       consumer:self.consumer
-                                                                          token:self.accessToken
-                                                                          realm:nil
-                                                              signatureProvider:nil] autorelease];
-        
-        [request setHTTPMethod:@"POST"];
-        
-        [fetcher fetchDataWithRequest:request 
-                             delegate:self
-                    didFinishSelector:@selector(accessTokenTicket:didFinishWithData:)
-                      didFailSelector:@selector(accessTokenTicket:didFailWithError:)];
-        
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            [self.presentationViewController dismissModalViewControllerAnimated:YES];
-        });
-        
-        return NO;
-    }
-    return YES;
-}
-
-- (void) accessTokenTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data
-{
-    if (ticket.didSucceed)
-    {
-        NSString *responseBody = [[[NSString alloc] initWithData:data 
-                                                       encoding:NSUTF8StringEncoding] autorelease];
-        
-        self.accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
-        [self.accessToken storeInUserDefaultsWithServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
-        [self postTweet];
-    }
-}
-
-- (void) postTweet
-{        
-    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
-    
-    NSURL *url = nil;
-    
-    if (self.tweet.image == nil){
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1/statuses/update.json"]];
-    } else {
-        url = [NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"];
-    }
-    
-    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
-                                                                   consumer:self.consumer
-                                                                      token:self.accessToken
-                                                                      realm:nil
-                                                          signatureProvider:nil] autorelease];
-    
-    [request setHTTPMethod:@"POST"];
-    
-    if (self.tweet.image == nil){
-        [request setHTTPBody:[[NSString stringWithFormat:@"status=%@", [self.tweet.tweet encodedURLParameterString]] dataUsingEncoding:NSUTF8StringEncoding]];
-    } else {
-        // From http://stackoverflow.com/a/7343889/891910
-        
-        NSString *boundary = @"----------------------------991990ee82f7";
-        
-        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-        [request setValue:contentType forHTTPHeaderField:@"content-type"];
-        
-        NSMutableData *body = [NSMutableData dataWithLength:0];
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        [body appendData:[@"Content-Disposition: form-data; name=\"media[]\"; filename=\"media.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Type: application/octet-stream\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];  
-        [body appendData:UIImagePNGRepresentation(self.tweet.image)];
-        [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Disposition: form-data; name=\"status\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithString:[NSString stringWithFormat:@"%@\r\n", self.tweet.tweet]] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-
-        [request setHTTPBody:body];
-    }
-    
-    [fetcher fetchDataWithRequest:request 
-                         delegate:self
-                didFinishSelector:@selector(apiTicket:didFinishWithData:)
-                  didFailSelector:@selector(apiTicket:didFailWithError:)];
-}
-
-- (void) apiTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data
-{
-    self.responseDictionary = [[JSONDecoder decoder] objectWithData:data];
-        
-    if ([self.responseDictionary objectForKey:@"error"] != nil){
-        self.error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:103 userInfo:[NSDictionary dictionaryWithObject:[self.responseDictionary objectForKey:@"error"] forKey:NSLocalizedDescriptionKey]];
-    }
-    
-    self.done = YES;
-}
-
-@end
 
 @implementation SMXTwitterWebViewController
-
-@synthesize twitterDelegate;
 
 - (void) viewDidLoad
 {
@@ -463,7 +396,27 @@
 
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    return [self.twitterDelegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+	if ([[[request URL] absoluteString] rangeOfString:[[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineCallback"]].length > 0){
+		
+		NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+		
+        NSArray *urlPieces = [[[request URL] absoluteString] componentsSeparatedByString:@"?"];
+        
+        NSArray *params = [[urlPieces objectAtIndex:1] componentsSeparatedByString:@"&"];
+        
+        for (NSString *p in params){
+            NSArray *pieces = [p componentsSeparatedByString:@"="];
+            [parameters setObject:[pieces objectAtIndex:1] forKey:[pieces objectAtIndex:0]];
+        }
+		
+		if (self.authorizedHandler != nil){
+			self.authorizedHandler(parameters);
+			[self.navigationController dismissModalViewControllerAnimated:YES];
+		}
+		return NO;
+	} else {
+		return YES;
+	}
 }
 
 - (BOOL) shouldPresentActionSheet:(UIActionSheet *)actionSheet
@@ -473,10 +426,10 @@
 
 - (void) cancel
 {
-    ((SMXTwitterEngineHandler *)self.twitterDelegate).error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]];
+    /*((SMXTwitterEngineHandler *)self.twitterDelegate).error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]];
     ((SMXTwitterEngineHandler *)self.twitterDelegate).done = YES;
     
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissModalViewControllerAnimated:YES];*/
     
 }
 
