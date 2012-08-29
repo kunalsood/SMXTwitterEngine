@@ -359,12 +359,29 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 + (void) streamTweetsWithHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
 	
+	NSURL *url = [NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"];
+	
+	void (^streamingBlock)(NSURLRequest *) = ^(NSURLRequest *request){
+		SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:request delegate:nil];
+		[connection setDataHandler:^(NSData *data) {
+			NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			if (dictionary != nil){
+				handler(dictionary, nil);
+			}
+		}];
+		[connection setCompletionHandler:^(NSError *error) {
+			
+		}];
+		[connection start];
+	};
+	
 	[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
 		if (account != nil){
-			// TODO: Use TWRequest for streaming
+			TWRequest *request = [[TWRequest alloc] initWithURL:url parameters:nil requestMethod:TWRequestMethodGET];
+			[request setAccount:account];
+			streamingBlock([request signedURLRequest]);
 		} else if (account == nil && error == nil){ // use manual OAuth
 			[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
-				NSURL *url = [NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"];
 				OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
 																			   consumer:[SMXTwitterEngine oAuthConsumer]
 																				  token:accessToken
@@ -372,18 +389,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 																	  signatureProvider:nil];
 				[request prepare];
 				
-				
-				SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:request delegate:nil];
-				[connection setDataHandler:^(NSData *data) {
-					NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-					if (dictionary != nil){
-						handler(dictionary, nil);
-					}
-				}];
-				[connection setCompletionHandler:^(NSError *error) {
-					NSLog(@"Done streaming");
-				}];
-				[connection start];
+				streamingBlock(request);
 				
 			}];
 		} else {
