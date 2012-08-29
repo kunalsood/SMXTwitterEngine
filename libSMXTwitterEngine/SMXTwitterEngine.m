@@ -19,6 +19,8 @@
 
 #import "Tweet.h"
 
+#import "SMXURLConnection.h"
+
 @interface SMXTwitterEngine () {
 }
 
@@ -50,6 +52,8 @@
 @end
 
 @implementation SMXTwitterEngine
+
+#pragma mark - Send Tweet
 
 + (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 {
@@ -220,6 +224,24 @@
     [[NSUserDefaults standardUserDefaults] setBool:useTweetComposeSheet forKey:@"SMXTwitterEngineUseTweetComposeSheet"];
 }
 
+#pragma mark - Stream Tweets
+
++ (void) streamTweetsWithHandler:(void (^)(NSDictionary *response, NSError *error))handler
+{
+	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"]];
+	SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:request delegate:nil];
+	[connection setDataHandler:^(NSData *data) {
+		NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+		if (dictionary != nil){
+			handler(dictionary, nil);
+		}
+	}];
+	[connection setCompletionHandler:^(NSError *error) {
+		
+	}];
+	[connection start];
+}
+
 @end
 
 
@@ -386,13 +408,13 @@
         NSMutableData *body = [NSMutableData dataWithLength:0];
         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
-        [body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"media[]\"; filename=\"media.png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithString:@"Content-Type: application/octet-stream\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];  
+        [body appendData:[@"Content-Disposition: form-data; name=\"media[]\"; filename=\"media.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Type: application/octet-stream\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];  
         [body appendData:UIImagePNGRepresentation(self.tweet.image)];
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"status\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithString:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Disposition: form-data; name=\"status\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithString:[NSString stringWithFormat:@"%@\r\n", self.tweet.tweet]] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 

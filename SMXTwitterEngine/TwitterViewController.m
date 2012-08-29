@@ -15,7 +15,10 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    [self.tweetField becomeFirstResponder];
+    //[self.tweetField becomeFirstResponder];
+	[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *object, NSError *error) {
+		NSLog(@"%@", object);
+	}];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
