@@ -10,10 +10,10 @@
 
 @interface SMXTwitterEngine : NSObject
 
-// You only need to use this if your app supports iOS 4, or you want to allow other accounts not in ACAccountStore
+// Set this to allow users to select another account not in ACAccountStore
 + (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback;
 
-// iOS5 only
+// When posting a tweet, use the iOS5 Tweet Sheet
 + (void) setUseTweetComposeSheetIfPossible:(BOOL)useTweetComposeSheet;
 
 // Posting Tweets

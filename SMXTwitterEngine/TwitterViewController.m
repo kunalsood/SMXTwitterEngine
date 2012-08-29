@@ -15,7 +15,7 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    //[self.tweetField becomeFirstResponder];
+    [self.tweetField becomeFirstResponder];
 	[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *object, NSError *error) {
 		NSLog(@"%@", object);
 	}];
@@ -29,13 +29,14 @@
 
 - (IBAction)sendTweet:(id)sender {
     self.tweetButton.enabled = NO;
-    [SMXTwitterEngine setConsumerKey:@"z0UAUAiauMKylCJYsKePg" consumerSecret:@"OZAGlveHaIb5FqiC2hec7Fps2Hf7ZRDsu5Olb70anw" callback:@"http://simonmaddox.com"];
+    [SMXTwitterEngine setConsumerKey:@"1FwppzgL0Heqw1CwvD4Qgw" consumerSecret:@"TCMVDYcl7n3KJot75JY884k5ZzXhvb3YEnAGxzBGOg" callback:@"http://simonmaddox.com"];
     
     //[SMXTwitterEngine setUseTweetComposeSheetIfPossible:YES];
     
     [SMXTwitterEngine sendTweet:self.tweetField.text andImage:[UIImage imageNamed:@"apple"] withCompletionHandler:^(NSDictionary *response, NSError *error){
         self.tweetButton.enabled = YES;
         if (error){
+			NSLog(@"%@", response);
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];
             [alert show];
         } else {

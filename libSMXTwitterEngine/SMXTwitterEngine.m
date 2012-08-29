@@ -49,47 +49,37 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
     t.tweet = tweet;
     t.image = image;
         
-    if (NSClassFromString(@"TWRequest") != nil){
-		BOOL useComposeSheet = [[NSUserDefaults standardUserDefaults] boolForKey:@"SMXTwitterEngineUseTweetComposeSheet"];
-		if (!useComposeSheet){
-			[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
-				if (account != nil){
-					[SMXTwitterEngine useAccount:account
-									 toSendTweet:t
-							   completionHandler:^(NSDictionary *response, NSError *error) {
-								  handler(response, error);
-							  }];
-				} else if (account == nil && error == nil){ // use manual OAuth
-					[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
-						[SMXTwitterEngine postTweet:t usingAccessToken:accessToken completionHandler:^(NSDictionary *response, NSError *error) {
-							dispatch_async(dispatch_get_main_queue(), ^(){
-								handler(response, error);
-							});
-						}];
+	BOOL useComposeSheet = [[NSUserDefaults standardUserDefaults] boolForKey:@"SMXTwitterEngineUseTweetComposeSheet"];
+	if (!useComposeSheet){
+		[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
+			if (account != nil){
+				[SMXTwitterEngine useAccount:account
+								 toSendTweet:t
+						   completionHandler:^(NSDictionary *response, NSError *error) {
+							  handler(response, error);
+						  }];
+			} else if (account == nil && error == nil){ // use manual OAuth
+				[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
+					[SMXTwitterEngine postTweet:t usingAccessToken:accessToken completionHandler:^(NSDictionary *response, NSError *error) {
+						dispatch_async(dispatch_get_main_queue(), ^(){
+							handler(response, error);
+						});
 					}];
-				} else {
-					dispatch_async(dispatch_get_main_queue(), ^(){
-						handler(nil, error);
-					});
-				}
-			}];
-		} else {
-			[SMXTwitterEngine postTweetusingComposeSheet:t
-									   completionHandler:^(NSDictionary *response, NSError *error) {
-										   dispatch_async(dispatch_get_main_queue(), ^(){
-											   handler(response, error);
-										   });
-									   }];
-		}
-    } else {
-		[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
-			[SMXTwitterEngine postTweet:t usingAccessToken:accessToken completionHandler:^(NSDictionary *response, NSError *error) {
+				}];
+			} else {
 				dispatch_async(dispatch_get_main_queue(), ^(){
-					handler(response, error);
+					handler(nil, error);
 				});
-			}];
+			}
 		}];
-    }
+	} else {
+		[SMXTwitterEngine postTweetusingComposeSheet:t
+								   completionHandler:^(NSDictionary *response, NSError *error) {
+									   dispatch_async(dispatch_get_main_queue(), ^(){
+										   handler(response, error);
+									   });
+								   }];
+	}
 }
 
 #pragma mark Twitter.framework
