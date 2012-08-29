@@ -29,7 +29,6 @@
 		F4F95059155AC66000BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */; };
 		F4F9505A155AC66700BBD987 /* THWebController.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F95040155AC07C00BBD987 /* THWebController.h */; };
 		F4F9505B155AC66A00BBD987 /* THWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95041155AC07C00BBD987 /* THWebController.m */; };
-		F4F9505C155AC67600BBD987 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95037155ABC1C00BBD987 /* JSONKit.m */; };
 		F4F9505D155AC6A900BBD987 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE3155AA6DE00BBD987 /* NSMutableURLRequest+Parameters.m */; };
 		F4F9505E155AC6A900BBD987 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE5155AA6DE00BBD987 /* NSString+URLEncoding.m */; };
 		F4F9505F155AC6A900BBD987 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE7155AA6DE00BBD987 /* NSURL+Base.m */; };
@@ -49,7 +48,6 @@
 		F4F9506D155AC6A900BBD987 /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95006155AA6DE00BBD987 /* OAToken.m */; };
 		F4F9506E155AC6A900BBD987 /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95008155AA6DE00BBD987 /* OATokenManager.m */; };
 		F4F95073155AC6D700BBD987 /* liblibSMXTwitterEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F95048155AC63D00BBD987 /* liblibSMXTwitterEngine.a */; };
-		F4F95074155AC71700BBD987 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F95036155ABC1C00BBD987 /* JSONKit.h */; };
 		F4F95075155AC71700BBD987 /* NSMutableURLRequest+Parameters.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94FE2155AA6DE00BBD987 /* NSMutableURLRequest+Parameters.h */; };
 		F4F95076155AC71700BBD987 /* NSString+URLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94FE4155AA6DE00BBD987 /* NSString+URLEncoding.h */; };
 		F4F95077155AC71700BBD987 /* NSURL+Base.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94FE6155AA6DE00BBD987 /* NSURL+Base.h */; };
@@ -148,8 +146,6 @@
 		F4F95008155AA6DE00BBD987 /* OATokenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATokenManager.m; sourceTree = "<group>"; };
 		F4F95009155AA6DE00BBD987 /* OAuthConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthConsumer.h; sourceTree = "<group>"; };
 		F4F9500A155AA6DE00BBD987 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		F4F95036155ABC1C00BBD987 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
-		F4F95037155ABC1C00BBD987 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		F4F9503F155AC07C00BBD987 /* THWebController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = THWebController.bundle; path = THWebViewController/THWebViewController/THWebController.bundle; sourceTree = SOURCE_ROOT; };
 		F4F95040155AC07C00BBD987 /* THWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = THWebController.h; path = THWebViewController/THWebViewController/THWebController.h; sourceTree = SOURCE_ROOT; };
 		F4F95041155AC07C00BBD987 /* THWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = THWebController.m; path = THWebViewController/THWebViewController/THWebController.m; sourceTree = SOURCE_ROOT; };
@@ -313,16 +309,6 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
-		F4F95035155ABC0B00BBD987 /* JSONKit */ = {
-			isa = PBXGroup;
-			children = (
-				F4F95036155ABC1C00BBD987 /* JSONKit.h */,
-				F4F95037155ABC1C00BBD987 /* JSONKit.m */,
-			);
-			name = JSONKit;
-			path = ../OAuthConsumer;
-			sourceTree = "<group>";
-		};
 		F4F9503E155AC06800BBD987 /* THWebViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -345,7 +331,6 @@
 				F41DCE0D155ACC900004F697 /* Tweet.m */,
 				F41DCE13155ACEB90004F697 /* MKBlockAdditions */,
 				F4F9503E155AC06800BBD987 /* THWebViewController */,
-				F4F95035155ABC0B00BBD987 /* JSONKit */,
 				F4F94FE0155AA6DE00BBD987 /* OAuthConsumer */,
 				F4F9504B155AC63D00BBD987 /* Supporting Files */,
 			);
@@ -370,7 +355,6 @@
 				F4F95057155AC65900BBD987 /* MKBlockAdditions.h in Headers */,
 				F4F95058155AC65D00BBD987 /* UIAlertView+MKBlockAdditions.h in Headers */,
 				F4F9505A155AC66700BBD987 /* THWebController.h in Headers */,
-				F4F95074155AC71700BBD987 /* JSONKit.h in Headers */,
 				F4F95075155AC71700BBD987 /* NSMutableURLRequest+Parameters.h in Headers */,
 				F4F95076155AC71700BBD987 /* NSString+URLEncoding.h in Headers */,
 				F4F95077155AC71700BBD987 /* NSURL+Base.h in Headers */,
@@ -492,7 +476,6 @@
 			files = (
 				F4F95059155AC66000BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */,
 				F4F9505B155AC66A00BBD987 /* THWebController.m in Sources */,
-				F4F9505C155AC67600BBD987 /* JSONKit.m in Sources */,
 				F4F9505D155AC6A900BBD987 /* NSMutableURLRequest+Parameters.m in Sources */,
 				F4F9505E155AC6A900BBD987 /* NSString+URLEncoding.m in Sources */,
 				F4F9505F155AC6A900BBD987 /* NSURL+Base.m in Sources */,

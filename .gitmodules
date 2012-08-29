@@ -4,9 +4,6 @@
 [submodule "OAuthConsumer"]
 	path = OAuthConsumer
 	url = https://github.com/jdg/oauthconsumer.git
-[submodule "JSONKit"]
-	path = JSONKit
-	url = https://github.com/johnezang/JSONKit.git
 [submodule "THWebViewController"]
 	path = THWebViewController
 	url = https://github.com/tokuhirom/THWebViewController.git

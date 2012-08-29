@@ -183,7 +183,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
     
     [twitterRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error){
         NSError *jsonError = nil;
-        NSDictionary *responseDictionary = [[JSONDecoder decoder] objectWithData:responseData];
+        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&jsonError];
         
         if (jsonError){
             dispatch_async(dispatch_get_main_queue(), ^(){
@@ -362,7 +362,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 	
 	[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
 		if (account != nil){
-			
+			// TODO: Use TWRequest for streaming
 		} else if (account == nil && error == nil){ // use manual OAuth
 			[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
 				NSURL *url = [NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"];
