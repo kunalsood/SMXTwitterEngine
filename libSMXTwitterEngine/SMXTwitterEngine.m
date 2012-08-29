@@ -24,7 +24,6 @@
 @interface SMXTwitterEngine () {
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 + (void) useManualOauthToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 
@@ -57,14 +56,7 @@
 
 + (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 {
-    Tweet *t = [[[Tweet alloc] init] autorelease];
-    t.tweet = tweet;
-    
-    if (NSClassFromString(@"TWRequest") != nil){
-        [SMXTwitterEngine useTwitterFrameworkToSendTweet:t completionHandler:handler];
-    } else {
-        [SMXTwitterEngine useManualOauthToSendTweet:t completionHandler:handler];
-    }
+	[SMXTwitterEngine sendTweet:tweet andImage:nil withCompletionHandler:handler];
 }
 
 + (void) sendTweet:(NSString *)tweet andImage:(UIImage *)image withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
@@ -74,93 +66,111 @@
     t.image = image;
         
     if (NSClassFromString(@"TWRequest") != nil){
-        [SMXTwitterEngine useTwitterFrameworkToSendTweet:t completionHandler:handler];
+		BOOL useComposeSheet = [[NSUserDefaults standardUserDefaults] boolForKey:@"SMXTwitterEngineUseTweetComposeSheet"];
+		if (!useComposeSheet){
+			[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
+				if (account != nil){
+					[SMXTwitterEngine useAccount:account
+									 toSendTweet:t
+							   completionHandler:^(NSDictionary *response, NSError *error) {
+								  handler(response, error);
+							  }];
+				} else if (account == nil && error == nil){ // use manual OAuth
+					
+				} else {
+					dispatch_async(dispatch_get_main_queue(), ^(){
+						handler(nil, error);
+					});
+				}
+			}];
+		} else {
+			[SMXTwitterEngine postTweetusingComposeSheet:t
+									   completionHandler:^(NSDictionary *response, NSError *error) {
+										   dispatch_async(dispatch_get_main_queue(), ^(){
+											   handler(response, error);
+										   });
+									   }];
+		}
     } else {
         [SMXTwitterEngine useManualOauthToSendTweet:t completionHandler:handler];
     }
 }
 
-+ (void) useTwitterFrameworkToSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) chooseAccountWithCompletionHandler:(void (^)(ACAccount *account, NSError *error))handler
 {
-    BOOL useComposeSheet = [[NSUserDefaults standardUserDefaults] boolForKey:@"SMXTwitterEngineUseTweetComposeSheet"];
-    
-    if (useComposeSheet){
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            TWTweetComposeViewController *tweetComposeViewController = [[[TWTweetComposeViewController alloc] init] autorelease];
-            [tweetComposeViewController setInitialText:tweet.tweet];
-            [tweetComposeViewController addImage:tweet.image];
-            [tweetComposeViewController setCompletionHandler:^(TWTweetComposeViewControllerResult result){
-                dispatch_async(dispatch_get_main_queue(), ^(){
-                    NSError *error = nil;
-                    if (result == TWTweetComposeViewControllerResultCancelled){
-                        error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]];
-                    }
-                    
-                    handler([NSDictionary dictionary], error);
-                });
-            }];
-            UIViewController *baseViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-            while ([baseViewController modalViewController]) {
-                baseViewController = [baseViewController modalViewController];
-            }
-            [baseViewController presentModalViewController:tweetComposeViewController animated:YES]; 
-        });
-    } else {
-        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-        
-        [accountStore requestAccessToAccountsWithType:[accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter] 
-                                withCompletionHandler:^(BOOL granted, NSError *error){
-                                    if (granted){
-                                        NSArray *accounts = [accountStore accountsWithAccountType:[accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter]];
-                                        
-                                        if (accounts.count == 0){
-                                            // No accounts set up. Let's fall back to OAuth
-                                            [self useManualOauthToSendTweet:tweet completionHandler:handler];
-                                        } else {
-                                            
-                                            if (accounts.count == 1){
-                                                // One account set up. Let's use that.
-                                                [SMXTwitterEngine useAccount:[accounts objectAtIndex:0] toSendTweet:tweet completionHandler:handler];
-                                            } else {
-                                                // More than one account set up. Let's ask which one we should use...
-                                                NSArray *accountTitles = [accounts valueForKeyPath:@"accountDescription"];
-                                                NSMutableArray *titles = [NSMutableArray arrayWithArray:accountTitles];
-                                                [titles addObject:NSLocalizedString(@"Another Account", @"Another Account alert title")];
-                                                
-                                                dispatch_async(dispatch_get_main_queue(), ^(){
-                                                    [UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose a Twitter account", @"Choose a Twitter account alert title") 
-                                                                            message:nil
-                                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"Choose a Twitter account alert cancel button") 
-                                                                  otherButtonTitles:titles 
-                                                                          onDismiss:^(int buttonIndex){
-                                                                              if (buttonIndex == (titles.count - 1)){
-                                                                                  [SMXTwitterEngine useManualOauthToSendTweet:tweet completionHandler:handler];
-                                                                              } else {
-                                                                                  [SMXTwitterEngine useAccount:[accounts objectAtIndex:buttonIndex] toSendTweet:tweet completionHandler:handler];
-                                                                              }
-                                                                          }
-                                                                           onCancel:^(){
-                                                                               dispatch_async(dispatch_get_main_queue(), ^(){
-                                                                                   handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]]);
-                                                                               });
-                                                                           }
-                                                     ];
-                                                    
-                                                });                                            
-                                            }
-                                            
-                                        }
-                                    } else {
-                                        if (error == nil){
-                                            error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:403 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User did not allow access to Twitter accounts", @"User did not allow access to Twitter accounts error message") forKey:NSLocalizedDescriptionKey]];
-                                        }
-                                        dispatch_async(dispatch_get_main_queue(), ^(){
-                                            handler(nil, error);
-                                        });
-                                    }
-                                }
-         ];
-    }
+	ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+	
+	[accountStore requestAccessToAccountsWithType:[accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter]
+							withCompletionHandler:^(BOOL granted, NSError *error){
+								if (granted){
+									NSArray *accounts = [accountStore accountsWithAccountType:[accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter]];
+									
+									if (accounts.count == 0){
+										// No accounts set up. Let's fall back to OAuth
+										handler(nil, nil);
+									} else {
+										
+										if (accounts.count == 1){
+											// One account set up. Let's use that.
+											handler([accounts objectAtIndex:0], nil);
+										} else {
+											// More than one account set up. Let's ask which one we should use...
+											NSArray *accountTitles = [accounts valueForKeyPath:@"accountDescription"];
+											NSMutableArray *titles = [NSMutableArray arrayWithArray:accountTitles];
+											[titles addObject:NSLocalizedString(@"Another Account", @"Another Account alert title")];
+											
+											dispatch_async(dispatch_get_main_queue(), ^(){
+												[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose a Twitter account", @"Choose a Twitter account alert title")
+																		message:nil
+															  cancelButtonTitle:NSLocalizedString(@"Cancel", @"Choose a Twitter account alert cancel button")
+															  otherButtonTitles:titles
+																	  onDismiss:^(int buttonIndex){
+																		  if (buttonIndex == (titles.count - 1)){
+																			  handler(nil, nil);
+																		  } else {
+																			  handler([accounts objectAtIndex:buttonIndex], nil);
+																		  }
+																	  }
+																	   onCancel:^(){
+																			handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]]);
+																	   }
+												 ];
+												
+											});
+										}
+										
+									}
+								} else {
+									handler(nil, [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:403 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User did not allow access to Twitter accounts", @"User did not allow access to Twitter accounts error message") forKey:NSLocalizedDescriptionKey]]);
+								}
+							}
+	 ];
+
+	
+}
+
++ (void) postTweetusingComposeSheet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
+{
+	dispatch_async(dispatch_get_main_queue(), ^(){
+		TWTweetComposeViewController *tweetComposeViewController = [[[TWTweetComposeViewController alloc] init] autorelease];
+		[tweetComposeViewController setInitialText:tweet.tweet];
+		[tweetComposeViewController addImage:tweet.image];
+		[tweetComposeViewController setCompletionHandler:^(TWTweetComposeViewControllerResult result){
+			dispatch_async(dispatch_get_main_queue(), ^(){
+				NSError *error = nil;
+				if (result == TWTweetComposeViewControllerResultCancelled){
+					error = [NSError errorWithDomain:@"com.simonmaddox.ios.SMXTwitterEngine" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"User Cancelled", @"User Cancelled error message") forKey:NSLocalizedDescriptionKey]];
+				}
+				
+				handler([NSDictionary dictionary], error);
+			});
+		}];
+		UIViewController *baseViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+		while ([baseViewController modalViewController]) {
+			baseViewController = [baseViewController modalViewController];
+		}
+		[baseViewController presentModalViewController:tweetComposeViewController animated:YES];
+	});
 }
 
 + (void) useAccount:(ACAccount *)account toSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
@@ -168,7 +178,7 @@
     TWRequest *twitterRequest = nil;
     
     if (tweet.image == nil){
-        twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"] 
+        twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"]
                                                     parameters:[NSDictionary dictionaryWithObject:tweet.tweet forKey:@"status"] 
                                                  requestMethod:TWRequestMethodPOST] autorelease];
     } else {

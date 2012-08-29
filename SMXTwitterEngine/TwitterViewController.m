@@ -31,7 +31,7 @@
     self.tweetButton.enabled = NO;
     [SMXTwitterEngine setConsumerKey:@"z0UAUAiauMKylCJYsKePg" consumerSecret:@"OZAGlveHaIb5FqiC2hec7Fps2Hf7ZRDsu5Olb70anw" callback:@"http://simonmaddox.com"];
     
-    [SMXTwitterEngine setUseTweetComposeSheetIfPossible:YES];
+    //[SMXTwitterEngine setUseTweetComposeSheetIfPossible:YES];
     
     [SMXTwitterEngine sendTweet:self.tweetField.text andImage:[UIImage imageNamed:@"apple"] withCompletionHandler:^(NSDictionary *response, NSError *error){
         self.tweetButton.enabled = YES;
