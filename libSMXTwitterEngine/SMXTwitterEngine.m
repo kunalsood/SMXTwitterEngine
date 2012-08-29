@@ -15,7 +15,6 @@
 #import "OAToken.h"
 
 #import "THWebController.h"
-#import "JSONKit.h"
 
 #import "Tweet.h"
 
