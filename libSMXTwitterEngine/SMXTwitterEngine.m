@@ -35,6 +35,18 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 
 @implementation SMXTwitterEngine
 
++ (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback
+{
+    [[NSUserDefaults standardUserDefaults] setObject:consumerKey forKey:@"SMXTwitterEngineConsumerKey"];
+    [[NSUserDefaults standardUserDefaults] setObject:consumerSecret forKey:@"SMXTwitterEngineConsumerSecret"];
+    [[NSUserDefaults standardUserDefaults] setObject:callback forKey:@"SMXTwitterEngineCallback"];
+}
+
++ (void) setUseTweetComposeSheetIfPossible:(BOOL)useTweetComposeSheet
+{
+    [[NSUserDefaults standardUserDefaults] setBool:useTweetComposeSheet forKey:@"SMXTwitterEngineUseTweetComposeSheet"];
+}
+
 #pragma mark - Post Tweet
 
 + (void) sendTweet:(NSString *)tweet withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
@@ -347,18 +359,6 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 						   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
 							   handler([NSJSONSerialization JSONObjectWithData:data options:0 error:nil], error);
 						   }];
-}
-
-+ (void) setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret callback:(NSString *)callback
-{
-    [[NSUserDefaults standardUserDefaults] setObject:consumerKey forKey:@"SMXTwitterEngineConsumerKey"];
-    [[NSUserDefaults standardUserDefaults] setObject:consumerSecret forKey:@"SMXTwitterEngineConsumerSecret"];
-    [[NSUserDefaults standardUserDefaults] setObject:callback forKey:@"SMXTwitterEngineCallback"];
-}
-
-+ (void) setUseTweetComposeSheetIfPossible:(BOOL)useTweetComposeSheet
-{
-    [[NSUserDefaults standardUserDefaults] setBool:useTweetComposeSheet forKey:@"SMXTwitterEngineUseTweetComposeSheet"];
 }
 
 #pragma mark - Stream Tweets
