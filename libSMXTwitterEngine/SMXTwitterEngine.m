@@ -367,18 +367,40 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters);
 
 + (void) streamTweetsWithHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"]];
-	SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:request delegate:nil];
-	[connection setDataHandler:^(NSData *data) {
-		NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-		if (dictionary != nil){
-			handler(dictionary, nil);
+	
+	[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
+		if (account != nil){
+			
+		} else if (account == nil && error == nil){ // use manual OAuth
+			[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
+				NSURL *url = [NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"];
+				OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
+																			   consumer:[SMXTwitterEngine oAuthConsumer]
+																				  token:accessToken
+																				  realm:nil
+																	  signatureProvider:nil];
+				[request prepare];
+				
+				
+				SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:request delegate:nil];
+				[connection setDataHandler:^(NSData *data) {
+					NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+					if (dictionary != nil){
+						handler(dictionary, nil);
+					}
+				}];
+				[connection setCompletionHandler:^(NSError *error) {
+					NSLog(@"Done streaming");
+				}];
+				[connection start];
+				
+			}];
+		} else {
+			dispatch_async(dispatch_get_main_queue(), ^(){
+				handler(nil, error);
+			});
 		}
 	}];
-	[connection setCompletionHandler:^(NSError *error) {
-		NSLog(@"Done streaming");
-	}];
-	[connection start];
 }
 
 @end
