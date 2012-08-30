@@ -45,8 +45,8 @@ information about the posted tweet available.
 Want to receive a stream of tweets?
 
 ```objc
-[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *object, NSError *error) {
-	NSLog(@"Object: %@", object);
+[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *message, NSError *error) {
+	NSLog(@"Object: %@", message);
 }];
 ```
 
