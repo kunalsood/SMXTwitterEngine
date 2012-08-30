@@ -1,5 +1,5 @@
 //
-//  Tweet.h
+//  SMXTweet.h
 //  SMXTwitterEngine
 //
 //  Created by Simon Maddox on 09/05/2012.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Tweet : NSObject
+@interface SMXTweet : NSObject
 
 @property (nonatomic, strong) NSString *tweet;
 @property (nonatomic, strong) UIImage *image;

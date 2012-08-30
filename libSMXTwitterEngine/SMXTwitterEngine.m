@@ -16,7 +16,7 @@
 
 #import "THWebController.h"
 
-#import "Tweet.h"
+#import "SMXTweet.h"
 
 #import "SMXURLConnection.h"
 
@@ -25,7 +25,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 @interface SMXTwitterEngine () {
 }
 
-+ (void) useAccount:(ACAccount *)account toSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) useAccount:(ACAccount *)account toSendTweet:(SMXTweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 @end
 
@@ -56,7 +56,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 
 + (void) sendTweet:(NSString *)tweet andImage:(UIImage *)image withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
-    Tweet *t = [[Tweet alloc] init];
+    SMXTweet *t = [[SMXTweet alloc] init];
     t.tweet = tweet;
     t.image = image;
         
@@ -154,7 +154,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	
 }
 
-+ (void) postTweetusingComposeSheet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) postTweetusingComposeSheet:(SMXTweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
 	dispatch_async(dispatch_get_main_queue(), ^(){
 		TWTweetComposeViewController *tweetComposeViewController = [[TWTweetComposeViewController alloc] init];
@@ -178,7 +178,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	});
 }
 
-+ (void) useAccount:(ACAccount *)account toSendTweet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) useAccount:(ACAccount *)account toSendTweet:(SMXTweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
     TWRequest *twitterRequest = nil;
     
@@ -306,7 +306,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	}
 }
 
-+ (void) postTweet:(Tweet *)tweet usingAccessToken:(OAToken *)accessToken completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) postTweet:(SMXTweet *)tweet usingAccessToken:(OAToken *)accessToken completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
 	NSURL *url = nil;
     

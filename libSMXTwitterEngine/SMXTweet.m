@@ -1,14 +1,14 @@
 //
-//  Tweet.m
+//  SMXTweet.m
 //  SMXTwitterEngine
 //
 //  Created by Simon Maddox on 09/05/2012.
 //  Copyright (c) 2012 The Lab, Telefonica UK Ltd. All rights reserved.
 //
 
-#import "Tweet.h"
+#import "SMXTweet.h"
 
-@implementation Tweet
+@implementation SMXTweet
 
 @synthesize tweet, image;
 
