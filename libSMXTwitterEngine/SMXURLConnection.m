@@ -95,7 +95,6 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	NSLog(@"Error: %@", error);
 	if (self.completionHandler != nil){
 		self.completionHandler(error);
 	}
