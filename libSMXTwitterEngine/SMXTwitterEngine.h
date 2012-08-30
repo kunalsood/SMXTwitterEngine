@@ -21,6 +21,6 @@
 + (void) sendTweet:(NSString *)tweet andImage:(UIImage *)image withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler;
 
 // Receiving Tweets
-+ (void) streamTweetsWithHandler:(void (^)(NSDictionary *response, NSError *error))handler;
++ (void) streamTweetsWithHandler:(void (^)(NSDictionary *message, NSError *error))handler;
 
 @end

@@ -361,7 +361,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 
 #pragma mark - Stream Tweets
 
-+ (void) streamTweetsWithHandler:(void (^)(NSDictionary *response, NSError *error))handler
++ (void) streamTweetsWithHandler:(void (^)(NSDictionary *message, NSError *error))handler
 {
 	
 	NSURL *url = [NSURL URLWithString:@"https://userstream.twitter.com/2/user.json"];
