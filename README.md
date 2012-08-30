@@ -84,10 +84,12 @@ And you're good to go!
 
 Have a look at the example project for a working demo.
 
-## ARC
 
-As much as I'd love to use ARC, requiring iOS 4.0 support means I can't :(
-SMXTwitterEngine does, however, still work in an ARC enabled application.
+## iOS 4
+
+I decided to remove iOS 4 support from SMXTwitterEngine while adding support for the streaming API.
+This was mostly because of the overhead of having another JSON parser in the framework. Now, it uses
+NSJSONSerialization for simplicity.
 
 ## iOS 3
 
