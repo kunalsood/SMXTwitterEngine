@@ -366,14 +366,28 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 + (void) streamTweetsWithHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
 	
-	NSURL *url = [NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"];
+	NSURL *url = [NSURL URLWithString:@"https://userstream.twitter.com/2/user.json"];
+	//NSURL *url = [NSURL URLWithString:@"https://stream.twitter.com/1/statuses/sample.json"];
 	
 	void (^streamingBlock)(NSURLRequest *) = ^(NSURLRequest *request){
-		SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:request delegate:nil];
+		
+		NSMutableURLRequest *mutableRequest = [request mutableCopy];
+		mutableRequest.timeoutInterval = DBL_MAX;
+		
+		SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:mutableRequest delegate:nil];
 		[connection setDataHandler:^(NSData *data) {
-			NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-			if (dictionary != nil){
-				handler(dictionary, nil);
+			
+			NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			NSArray *objects = [responseString componentsSeparatedByString:@"\r\n"];
+			
+			for (NSString *object in objects){
+				if (object.length > 0){
+					NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[object dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+					
+					if (dictionary != nil){
+						handler(dictionary, nil);
+					}
+				}
 			}
 		}];
 		[connection setCompletionHandler:^(NSError *error) {
