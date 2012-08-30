@@ -233,11 +233,11 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 		
 		__block OAConsumer *consumer = [SMXTwitterEngine oAuthConsumer];
 		
-		OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
+		OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
 																		consumer:consumer
 																		   token:nil
 																		   realm:nil
-															   signatureProvider:nil];
+															   signatureProvider:nil] autorelease];
 		
 		[request setHTTPMethod:@"POST"];
 		[request prepare];
@@ -371,14 +371,15 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	
 	void (^streamingBlock)(NSURLRequest *) = ^(NSURLRequest *request){
 		
-		NSMutableURLRequest *mutableRequest = [request mutableCopy];
+		NSMutableURLRequest *mutableRequest = [[request mutableCopy] autorelease];
 		mutableRequest.timeoutInterval = DBL_MAX;
 		
-		SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:mutableRequest delegate:nil];
+		SMXURLConnection *connection = [[[SMXURLConnection alloc] initWithRequest:mutableRequest delegate:nil] autorelease];
 		[connection setDataHandler:^(NSData *data) {
 			
 			NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 			NSArray *objects = [responseString componentsSeparatedByString:@"\r\n"];
+			[responseString release];
 			
 			for (NSString *object in objects){
 				if (object.length > 0){
@@ -398,16 +399,16 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	
 	[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
 		if (account != nil){
-			TWRequest *request = [[TWRequest alloc] initWithURL:url parameters:nil requestMethod:TWRequestMethodGET];
+			TWRequest *request = [[[TWRequest alloc] initWithURL:url parameters:nil requestMethod:TWRequestMethodGET] autorelease];
 			[request setAccount:account];
 			streamingBlock([request signedURLRequest]);
 		} else if (account == nil && error == nil){ // use manual OAuth
 			[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
-				OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
+				OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
 																			   consumer:[SMXTwitterEngine oAuthConsumer]
 																				  token:accessToken
 																				  realm:nil
-																	  signatureProvider:nil];
+																	  signatureProvider:nil] autorelease];
 				[request prepare];
 				
 				streamingBlock(request);
