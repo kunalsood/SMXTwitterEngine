@@ -56,7 +56,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 
 + (void) sendTweet:(NSString *)tweet andImage:(UIImage *)image withCompletionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
-    Tweet *t = [[[Tweet alloc] init] autorelease];
+    Tweet *t = [[Tweet alloc] init];
     t.tweet = tweet;
     t.image = image;
         
@@ -157,7 +157,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 + (void) postTweetusingComposeSheet:(Tweet *)tweet completionHandler:(void (^)(NSDictionary *response, NSError *error))handler
 {
 	dispatch_async(dispatch_get_main_queue(), ^(){
-		TWTweetComposeViewController *tweetComposeViewController = [[[TWTweetComposeViewController alloc] init] autorelease];
+		TWTweetComposeViewController *tweetComposeViewController = [[TWTweetComposeViewController alloc] init];
 		[tweetComposeViewController setInitialText:tweet.tweet];
 		[tweetComposeViewController addImage:tweet.image];
 		[tweetComposeViewController setCompletionHandler:^(TWTweetComposeViewControllerResult result){
@@ -183,13 +183,13 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
     TWRequest *twitterRequest = nil;
     
     if (tweet.image == nil){
-        twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"]
+        twitterRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"]
                                                     parameters:[NSDictionary dictionaryWithObject:tweet.tweet forKey:@"status"] 
-                                                 requestMethod:TWRequestMethodPOST] autorelease];
+                                                 requestMethod:TWRequestMethodPOST];
     } else {
-        twitterRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] 
+        twitterRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] 
                                               parameters:nil 
-                                           requestMethod:TWRequestMethodPOST] autorelease];
+                                           requestMethod:TWRequestMethodPOST];
         [twitterRequest addMultiPartData:UIImagePNGRepresentation(tweet.image) withName:@"media" type:@"image/png"];
         [twitterRequest addMultiPartData:[tweet.tweet dataUsingEncoding:NSUTF8StringEncoding] withName:@"status" type:@"text/plain"];
     }
@@ -219,25 +219,25 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	NSString *key = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerKey"];
 	NSString *secret = [[NSUserDefaults standardUserDefaults] stringForKey:@"SMXTwitterEngineConsumerSecret"];
 	
-	return [[[OAConsumer alloc] initWithKey:key secret:secret] autorelease];
+	return [[OAConsumer alloc] initWithKey:key secret:secret];
 }
 
 + (void) fetchAccessTokenWithCompletionHandler:(void (^)(OAToken *accessToken, NSError *error))handler
 {
-	OAToken *token = [[[OAToken alloc] initWithUserDefaultsUsingServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil] autorelease];
+	OAToken *token = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
 	if (token.isValid){
 		handler(token, nil);
 	} else {
 	
 		NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/request_token"];
 		
-		__block OAConsumer *consumer = [SMXTwitterEngine oAuthConsumer];
+		__weak OAConsumer *consumer = [SMXTwitterEngine oAuthConsumer];
 		
-		OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+		OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
 																		consumer:consumer
 																		   token:nil
 																		   realm:nil
-															   signatureProvider:nil] autorelease];
+															   signatureProvider:nil];
 		
 		[request setHTTPMethod:@"POST"];
 		[request prepare];
@@ -245,8 +245,8 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 		[NSURLConnection sendAsynchronousRequest:request
 										   queue:[NSOperationQueue mainQueue]
 							   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-								   NSString *responseBody = [[[NSString alloc] initWithData:data
-																				   encoding:NSUTF8StringEncoding] autorelease];
+								   NSString *responseBody = [[NSString alloc] initWithData:data
+																				   encoding:NSUTF8StringEncoding];
 								   
 								   __block OAToken *token = [[OAToken alloc] initWithHTTPResponseBody:responseBody];
 								   
@@ -273,11 +273,11 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 											   
 											   NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
 											   
-											   OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+											   OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
 																											   consumer:consumer
 																												  token:token
 																												  realm:nil
-																									  signatureProvider:nil] autorelease];
+																									  signatureProvider:nil];
 											   
 											   [request setHTTPMethod:@"POST"];
 											   [request prepare];
@@ -287,10 +287,10 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 											   [NSURLConnection sendAsynchronousRequest:request
 																				  queue:[NSOperationQueue mainQueue]
 																	  completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-																		  NSString *responseBody = [[[NSString alloc] initWithData:data
-																														  encoding:NSUTF8StringEncoding] autorelease];
+																		  NSString *responseBody = [[NSString alloc] initWithData:data
+																														  encoding:NSUTF8StringEncoding];
 																		  
-																		  OAToken *accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
+																		  OAToken *accessToken = [[OAToken alloc] initWithHTTPResponseBody:responseBody];
 																		  [accessToken storeInUserDefaultsWithServiceProviderName:@"SMXTwitterEngineAccessToken" prefix:nil];
 																		  handler(accessToken, nil);
 																	  }];
@@ -300,8 +300,6 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 									   [webViewController openURL:url];
 									   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
 									   [presentationViewController presentModalViewController:navigationController animated:YES];
-									   [webViewController release];
-									   [navigationController release];
 								   });
 								   
 							   }];
@@ -318,11 +316,11 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
         url = [NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"];
     }
     
-    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
 																	consumer:[SMXTwitterEngine oAuthConsumer]
 																	   token:accessToken
 																	   realm:nil
-														   signatureProvider:nil] autorelease];
+														   signatureProvider:nil];
     
     [request setHTTPMethod:@"POST"];
     
@@ -371,15 +369,14 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	
 	void (^streamingBlock)(NSURLRequest *) = ^(NSURLRequest *request){
 		
-		NSMutableURLRequest *mutableRequest = [[request mutableCopy] autorelease];
+		NSMutableURLRequest *mutableRequest = [request mutableCopy];
 		mutableRequest.timeoutInterval = DBL_MAX;
 		
-		SMXURLConnection *connection = [[[SMXURLConnection alloc] initWithRequest:mutableRequest delegate:nil] autorelease];
+		SMXURLConnection *connection = [[SMXURLConnection alloc] initWithRequest:mutableRequest delegate:nil];
 		[connection setDataHandler:^(NSData *data) {
 			
 			NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 			NSArray *objects = [responseString componentsSeparatedByString:@"\r\n"];
-			[responseString release];
 			
 			for (NSString *object in objects){
 				if (object.length > 0){
@@ -399,16 +396,16 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 	
 	[SMXTwitterEngine chooseAccountWithCompletionHandler:^(ACAccount *account, NSError *error) {
 		if (account != nil){
-			TWRequest *request = [[[TWRequest alloc] initWithURL:url parameters:nil requestMethod:TWRequestMethodGET] autorelease];
+			TWRequest *request = [[TWRequest alloc] initWithURL:url parameters:nil requestMethod:TWRequestMethodGET];
 			[request setAccount:account];
 			streamingBlock([request signedURLRequest]);
 		} else if (account == nil && error == nil){ // use manual OAuth
 			[SMXTwitterEngine fetchAccessTokenWithCompletionHandler:^(OAToken *accessToken, NSError *error) {
-				OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url
+				OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url
 																			   consumer:[SMXTwitterEngine oAuthConsumer]
 																				  token:accessToken
 																				  realm:nil
-																	  signatureProvider:nil] autorelease];
+																	  signatureProvider:nil];
 				[request prepare];
 				
 				streamingBlock(request);
@@ -432,7 +429,7 @@ typedef void(^TwitterWebViewAuthorizedHandler)(NSDictionary *parameters, NSError
 {
     [super viewDidLoad];
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
 }
 
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType

@@ -26,27 +26,27 @@
 		F4F95049155AC63D00BBD987 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F94EF8155A7EED00BBD987 /* Foundation.framework */; };
 		F4F95057155AC65900BBD987 /* MKBlockAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94F14155A81AC00BBD987 /* MKBlockAdditions.h */; };
 		F4F95058155AC65D00BBD987 /* UIAlertView+MKBlockAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94F15155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.h */; };
-		F4F95059155AC66000BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */; };
+		F4F95059155AC66000BBD987 /* UIAlertView+MKBlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94F16155A81AC00BBD987 /* UIAlertView+MKBlockAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F4F9505A155AC66700BBD987 /* THWebController.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F95040155AC07C00BBD987 /* THWebController.h */; };
-		F4F9505B155AC66A00BBD987 /* THWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95041155AC07C00BBD987 /* THWebController.m */; };
-		F4F9505D155AC6A900BBD987 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE3155AA6DE00BBD987 /* NSMutableURLRequest+Parameters.m */; };
-		F4F9505E155AC6A900BBD987 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE5155AA6DE00BBD987 /* NSString+URLEncoding.m */; };
-		F4F9505F155AC6A900BBD987 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE7155AA6DE00BBD987 /* NSURL+Base.m */; };
-		F4F95060155AC6A900BBD987 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE9155AA6DE00BBD987 /* Base64Transcoder.c */; };
-		F4F95061155AC6A900BBD987 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FEB155AA6DE00BBD987 /* hmac.c */; };
-		F4F95062155AC6A900BBD987 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FED155AA6DE00BBD987 /* sha1.c */; };
-		F4F95063155AC6A900BBD987 /* OAAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF0155AA6DE00BBD987 /* OAAttachment.m */; };
-		F4F95064155AC6A900BBD987 /* OACall.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF2155AA6DE00BBD987 /* OACall.m */; };
-		F4F95065155AC6A900BBD987 /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF4155AA6DE00BBD987 /* OAConsumer.m */; };
-		F4F95066155AC6A900BBD987 /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF6155AA6DE00BBD987 /* OADataFetcher.m */; };
-		F4F95067155AC6A900BBD987 /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF8155AA6DE00BBD987 /* OAHMAC_SHA1SignatureProvider.m */; };
-		F4F95068155AC6A900BBD987 /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FFA155AA6DE00BBD987 /* OAMutableURLRequest.m */; };
-		F4F95069155AC6A900BBD987 /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FFC155AA6DE00BBD987 /* OAPlaintextSignatureProvider.m */; };
-		F4F9506A155AC6A900BBD987 /* OAProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FFE155AA6DE00BBD987 /* OAProblem.m */; };
-		F4F9506B155AC6A900BBD987 /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95000155AA6DE00BBD987 /* OARequestParameter.m */; };
-		F4F9506C155AC6A900BBD987 /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95002155AA6DE00BBD987 /* OAServiceTicket.m */; };
-		F4F9506D155AC6A900BBD987 /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95006155AA6DE00BBD987 /* OAToken.m */; };
-		F4F9506E155AC6A900BBD987 /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95008155AA6DE00BBD987 /* OATokenManager.m */; };
+		F4F9505B155AC66A00BBD987 /* THWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95041155AC07C00BBD987 /* THWebController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9505D155AC6A900BBD987 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE3155AA6DE00BBD987 /* NSMutableURLRequest+Parameters.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9505E155AC6A900BBD987 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE5155AA6DE00BBD987 /* NSString+URLEncoding.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9505F155AC6A900BBD987 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE7155AA6DE00BBD987 /* NSURL+Base.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95060155AC6A900BBD987 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FE9155AA6DE00BBD987 /* Base64Transcoder.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95061155AC6A900BBD987 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FEB155AA6DE00BBD987 /* hmac.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95062155AC6A900BBD987 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FED155AA6DE00BBD987 /* sha1.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95063155AC6A900BBD987 /* OAAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF0155AA6DE00BBD987 /* OAAttachment.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95064155AC6A900BBD987 /* OACall.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF2155AA6DE00BBD987 /* OACall.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95065155AC6A900BBD987 /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF4155AA6DE00BBD987 /* OAConsumer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95066155AC6A900BBD987 /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF6155AA6DE00BBD987 /* OADataFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95067155AC6A900BBD987 /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FF8155AA6DE00BBD987 /* OAHMAC_SHA1SignatureProvider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95068155AC6A900BBD987 /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FFA155AA6DE00BBD987 /* OAMutableURLRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F95069155AC6A900BBD987 /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FFC155AA6DE00BBD987 /* OAPlaintextSignatureProvider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9506A155AC6A900BBD987 /* OAProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F94FFE155AA6DE00BBD987 /* OAProblem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9506B155AC6A900BBD987 /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95000155AA6DE00BBD987 /* OARequestParameter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9506C155AC6A900BBD987 /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95002155AA6DE00BBD987 /* OAServiceTicket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9506D155AC6A900BBD987 /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95006155AA6DE00BBD987 /* OAToken.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		F4F9506E155AC6A900BBD987 /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F95008155AA6DE00BBD987 /* OATokenManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F4F95073155AC6D700BBD987 /* liblibSMXTwitterEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F95048155AC63D00BBD987 /* liblibSMXTwitterEngine.a */; };
 		F4F95075155AC71700BBD987 /* NSMutableURLRequest+Parameters.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94FE2155AA6DE00BBD987 /* NSMutableURLRequest+Parameters.h */; };
 		F4F95076155AC71700BBD987 /* NSString+URLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F94FE4155AA6DE00BBD987 /* NSString+URLEncoding.h */; };
@@ -568,6 +568,7 @@
 		F4F94F0B155A7EED00BBD987 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SMXTwitterEngine/SMXTwitterEngine-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
@@ -586,6 +587,7 @@
 		F4F94F0C155A7EED00BBD987 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SMXTwitterEngine/SMXTwitterEngine-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
@@ -604,6 +606,7 @@
 		F4F95051155AC63E00BBD987 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/libSMXTwitterEngine.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "libSMXTwitterEngine/libSMXTwitterEngine-Prefix.pch";
@@ -616,6 +619,7 @@
 		F4F95052155AC63E00BBD987 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/libSMXTwitterEngine.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "libSMXTwitterEngine/libSMXTwitterEngine-Prefix.pch";

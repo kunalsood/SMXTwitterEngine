@@ -10,7 +10,7 @@
 
 @interface SMXURLConnection () <NSURLConnectionDataDelegate, NSURLConnectionDelegate>
 
-@property (nonatomic, assign) id <NSURLConnectionDataDelegate> realDelegate;
+@property (nonatomic, weak) id <NSURLConnectionDataDelegate> realDelegate;
 
 @end
 

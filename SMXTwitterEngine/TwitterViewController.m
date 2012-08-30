@@ -19,7 +19,7 @@
 	
 	[SMXTwitterEngine streamTweetsWithHandler:^(NSDictionary *object, NSError *error) {
 		if (error){
-			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             [alert show];
 		} else {
 			NSLog(@"%@", object);
@@ -43,20 +43,15 @@
         self.tweetButton.enabled = YES;
         if (error){
 			NSLog(@"%@", response);
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             [alert show];
         } else {
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Tweet Posted" message:nil delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil] autorelease];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tweet Posted" message:nil delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             [alert show];
         }
     }];
 }
 
-- (void)dealloc {
-    [tweetField release];
-    [tweetButton release];
-    [super dealloc];
-}
 - (void)viewDidUnload {
     [self setTweetField:nil];
     [self setTweetButton:nil];
