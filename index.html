@@ -16,8 +16,11 @@
     <div class="wrapper">
       <header>
         <h1>SMXTwitterEngine</h1>
-        <p>An easy to use Twitter library for iOS 4 and 5</p>
+        <p>An easy to use Twitter library for iOS</p>
+
         <p class="view"><a href="https://github.com/o2Labs/SMXTwitterEngine">View the Project on GitHub <small>o2Labs/SMXTwitterEngine</small></a></p>
+
+
         <ul>
           <li><a href="https://github.com/o2Labs/SMXTwitterEngine/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/o2Labs/SMXTwitterEngine/tarball/master">Download <strong>TAR Ball</strong></a></li>
@@ -25,56 +28,54 @@
         </ul>
       </header>
       <section>
-        <p>After being annoyed by the complexity of other Twitter libraries for iOS, I built this. It only
-supports posting a Tweet, and I've no intention of supporting the other capabilities in Twitter.</p>
+        <h1>SMXTwitterEngine</h1>
+
+<p>After being annoyed by the complexity of other Twitter libraries for iOS, I built this. It supports
+posting a tweet, and receiving a user's stream.</p>
 
 <p>It uses iOS5's Twitter framework when running on a device that supports it, but falls back
-to good a old fashioned UIWebView if the device is running 4.x or there are no Twitter accounts
-configured in iOS.</p>
+to good a old fashioned UIWebView if there are no Twitter accounts configured in iOS.</p>
 
-<p>If you only want to use it on iOS5, it's really simple:</p>
+<p>It's really simple to use:</p>
 
-<div class="highlight">
-<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">sendTweet:</span><span class="s">@"This is a tweet"</span> <span class="nl">withCompletionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+<div class="highlight"><pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">sendTweet:</span><span class="s">@"This is a tweet"</span> <span class="nl">withCompletionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
     <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Response: %@"</span><span class="p">,</span> <span class="n">response</span><span class="p">);</span>
     <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Error: %@"</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
 <span class="p">}];</span>
-</pre>
-</div>
-
+</pre></div>
 
 <p>Want to attach an image? Easy:</p>
 
-<div class="highlight">
-<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">sendTweet:</span><span class="s">@"This is a tweet"</span> <span class="nl">andImage:</span><span class="n">myImage</span> <span class="nl">withCompletionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+<div class="highlight"><pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">sendTweet:</span><span class="s">@"This is a tweet"</span> <span class="nl">andImage:</span><span class="n">myImage</span> <span class="nl">withCompletionHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
     <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Response: %@"</span><span class="p">,</span> <span class="n">response</span><span class="p">);</span>
     <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Error: %@"</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
 <span class="p">}];</span>
-</pre>
-</div>
+</pre></div>
 
+<p>If you want to allow users to choose an account not in their Twitter settings:</p>
 
-<p>If you're planning on running on devices running 4.x, you'll also need:</p>
-
-<div class="highlight">
-<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">setConsumerKey:</span><span class="s">@"KEY"</span> <span class="nl">consumerSecret:</span><span class="s">@"SECRET"</span> <span class="nl">callback:</span><span class="s">@"CALLBACK"</span><span class="p">];</span>
-</pre>
-</div>
-
+<div class="highlight"><pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">setConsumerKey:</span><span class="s">@"KEY"</span> <span class="nl">consumerSecret:</span><span class="s">@"SECRET"</span> <span class="nl">callback:</span><span class="s">@"CALLBACK"</span><span class="p">];</span>
+</pre></div>
 
 <p>You'll need to get your consumer key, consumer secret and callback set up <a href="http://dev.twitter.com/apps">here</a>. 
 Don't forget to make the application "Read &amp; Write".</p>
 
 <p>Would you rather use a Tweet Sheet on iOS 5 if possible? Easy:</p>
 
-<div class="highlight">
-<pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">setUseTweetComposeSheetIfPossible:</span><span class="n">YES</span><span class="p">];</span>
-</pre>
-</div>
-
+<div class="highlight"><pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">setUseTweetComposeSheetIfPossible:</span><span class="n">YES</span><span class="p">];</span>
+</pre></div>
 
 <p>NOTE: Using a Tweet sheet will return an empty NSDictionary to your completion handler, since iOS doesn't make any
 information about the posted tweet available.</p>
+
+<p>Want to receive a stream of tweets?</p>
+
+<div class="highlight"><pre><span class="p">[</span><span class="n">SMXTwitterEngine</span> <span class="nl">streamTweetsWithHandler:</span><span class="o">^</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">message</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"Object: %@"</span><span class="p">,</span> <span class="n">message</span><span class="p">);</span>
+<span class="p">}];</span>
+</pre></div>
+
+<p>That's it! SMXTwitterEngine will handle all authentication for you, so you don't need to worry about a thing!</p>
 
 <h2>Installing</h2>
 
@@ -96,11 +97,8 @@ need to make sure those are optional frameworks (weakly linked).</p>
 
 <p>Finally:</p>
 
-<div class="highlight">
-<pre><span class="cp">#import &lt;libSMXTwitterEngine/SMXTwitterEngine.h&gt;</span>
-</pre>
-</div>
-
+<div class="highlight"><pre><span class="cp">#import &lt;libSMXTwitterEngine/SMXTwitterEngine.h&gt;</span>
+</pre></div>
 
 <p>And you're good to go!</p>
 
@@ -108,10 +106,11 @@ need to make sure those are optional frameworks (weakly linked).</p>
 
 <p>Have a look at the example project for a working demo.</p>
 
-<h2>ARC</h2>
+<h2>iOS 4</h2>
 
-<p>As much as I'd love to use ARC, requiring iOS 4.0 support means I can't :(
-SMXTwitterEngine does, however, still work in an ARC enabled application.</p>
+<p>I decided to remove iOS 4 support from SMXTwitterEngine while adding support for the streaming API.
+This was mostly because of the overhead of having another JSON parser in the framework. Now, it uses
+NSJSONSerialization for simplicity.</p>
 
 <h2>iOS 3</h2>
 
